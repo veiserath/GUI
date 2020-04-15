@@ -13,7 +13,7 @@ public class Osoba {
     List<File> pisma = new ArrayList<>();
 
     List<Mieszkanie> mieszkania = new ArrayList<>();
-    List<Przedmiot> miejscaParkingowe = new ArrayList<>();
+    List<MiejsceParkingowe> miejscaParkingowe = new ArrayList<>();
 
     public Osoba(String imie, String nazwisko, int PESEL, String adres, String dataUrodzenia) {
         this.imie = imie;

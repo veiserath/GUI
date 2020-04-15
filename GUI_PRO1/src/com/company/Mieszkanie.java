@@ -1,25 +1,31 @@
 package com.company;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Mieszkanie {
     String idMieszkania;
     double objetosc;
     static int mieszkaniaCreated;
-    String dataRozpoczeciaNajmu;
-    String dataZakonczeniaNajmu;
+    Date dataRozpoczeciaNajmu;
+    Date dataZakonczeniaNajmu;
+    Najemca najemca;
+    MiejsceParkingowe miejsceParkingowe;
+
 
     List<Osoba> mieszkancy = new ArrayList<>();
 
     //kazde mieszkanie moze miec tylko 1 najemce
-    public Mieszkanie(double objetosc, Najemca najemca) {
+    public Mieszkanie(double objetosc) {
         mieszkaniaCreated++;
         this.idMieszkania = "Mieszkanie: " + mieszkaniaCreated;
         this.objetosc = objetosc;
     }
 
-    public Mieszkanie(double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia, Najemca najemca) {
+    public Mieszkanie(double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia) {
         mieszkaniaCreated++;
         this.idMieszkania = "Mieszkanie: " + mieszkaniaCreated;
         this.objetosc = dlugoscPomieszczenia * szerokoscPomieszczenia * wysokoscPomieszczenia;
@@ -38,6 +44,17 @@ public class Mieszkanie {
 
     public void usunNajemce(Osoba osoba) {
         this.mieszkancy.remove(osoba);
+    }
+
+    public void wynajmij(Najemca najemca, String dataRozpoczeciaNajmu, String dataZakonczeniaNajmu) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        this.dataRozpoczeciaNajmu = simpleDateFormat.parse(dataRozpoczeciaNajmu);
+        this.dataZakonczeniaNajmu = simpleDateFormat.parse(dataZakonczeniaNajmu);
+        this.najemca = najemca;
+    }
+
+    public void wynajmijMiejsceParkingowe(MiejsceParkingowe miejsceParkingowe) {
+        this.miejsceParkingowe = miejsceParkingowe;
     }
 
 }
