@@ -1,47 +1,33 @@
 package com.company;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MiejsceParkingowe {
-    String idMiejscaParkingowego;
+public class MiejsceParkingowe extends Osiedle {
+    String id;
     double objetosc;
     static int miejscaParkingoweCreated;
     Date dataRozpoczeciaNajmu;
     Date dataZakonczeniaNajmu;
-    Najemca najemca;
+    Osoba najemca;
+    boolean zadluzone;
 
     List<Przedmiot> przedmioty = new ArrayList<>();
 
-    public MiejsceParkingowe(double objetoscPomieszczenia) {
+    public MiejsceParkingowe(String nazwaOsiedla, double objetoscPomieszczenia) {
+        super(nazwaOsiedla);
         miejscaParkingoweCreated++;
-        this.idMiejscaParkingowego = "Miejsce parkingowe: " + miejscaParkingoweCreated;
+        this.id = "Miejsce parkingowe: " + miejscaParkingoweCreated;
         this.objetosc = objetoscPomieszczenia;
+        this.zadluzone = false;
     }
 
-    public MiejsceParkingowe(double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia) {
-
+    public MiejsceParkingowe(String nazwaOsiedla, double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia) {
+        super(nazwaOsiedla);
         miejscaParkingoweCreated++;
-        this.idMiejscaParkingowego = "Miejsce parkingowe: " + miejscaParkingoweCreated;
+        this.id = "Miejsce parkingowe: " + miejscaParkingoweCreated;
         this.objetosc = dlugoscPomieszczenia * szerokoscPomieszczenia * wysokoscPomieszczenia;
-    }
-
-    public void dodajPrzedmiot(Przedmiot przedmiot) throws TooManyThingsException {
-        if (this.objetosc - przedmiot.objetosc < 0) {
-            throw new TooManyThingsException();
-        } else {
-            this.objetosc -= przedmiot.objetosc;
-            przedmioty.add(przedmiot);
-        }
-    }
-
-    public void wynajmij(Najemca najemca, String dataRozpoczeciaNajmu, String dataZakonczeniaNajmu) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        this.dataRozpoczeciaNajmu = simpleDateFormat.parse(dataRozpoczeciaNajmu);
-        this.dataZakonczeniaNajmu = simpleDateFormat.parse(dataZakonczeniaNajmu);
-        this.najemca = najemca;
+        this.zadluzone = false;
     }
 }

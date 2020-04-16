@@ -4,34 +4,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.List;
 
 public class DateMover extends Thread {
 
     Date currentDate;
     private Calendar c;
     SimpleDateFormat sdf;
-    Date dataRozpoczeciaNajmu;
+    List<Osiedle> osiedleList;
 
 
-    public DateMover(Mieszkanie mieszkanie) {
+    public DateMover(List<Osiedle> osiedleList) {
         sdf = new SimpleDateFormat("dd-MM-yyyy");
-        this.dataRozpoczeciaNajmu = mieszkanie.dataRozpoczeciaNajmu;
+        this.osiedleList = osiedleList;
         c = Calendar.getInstance();
-        c.setTime(this.dataRozpoczeciaNajmu);
 
-        Thread thread1 = new RentalValidity(mieszkanie,c, sdf);
-        thread1.start();
+        c.set(Calendar.YEAR, 2020);
+        c.set(Calendar.DAY_OF_YEAR, 107);
+
     }
-    public DateMover(MiejsceParkingowe miejsceParkingowe) {
-        sdf = new SimpleDateFormat("dd-MM-yyyy");
-        this.dataRozpoczeciaNajmu = miejsceParkingowe.dataRozpoczeciaNajmu;
-        c = Calendar.getInstance();
-        c.setTime(this.dataRozpoczeciaNajmu);
-
-        Thread thread1 = new RentalValidity(miejsceParkingowe,c, sdf);
-        thread1.start();
-    }
-
 
     @Override
     public void run() {
@@ -40,7 +31,7 @@ public class DateMover extends Thread {
             while (true) {
                 c.add(Calendar.DAY_OF_MONTH, 1);
                 String newDate = sdf.format(c.getTime());
-                System.out.println("Tutaj zmieniamy: " + newDate);
+//                System.out.println("Tutaj zmieniamy: " + newDate);
                 this.sleep(5000);
             }
 
@@ -50,7 +41,5 @@ public class DateMover extends Thread {
         }
     }
 
-    public Calendar getC() {
-        return c;
-    }
+
 }

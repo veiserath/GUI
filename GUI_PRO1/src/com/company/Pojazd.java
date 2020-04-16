@@ -1,6 +1,6 @@
 package com.company;
 
-public class Pojazd extends Przedmiot{
+public class Pojazd extends Przedmiot {
     int pojemnoscSilnika;
     String typPojazdu;
     String typSilnika;
