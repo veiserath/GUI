@@ -2,12 +2,16 @@ package com.company;
 
 
 import java.text.ParseException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException, ProblematicTenantException {
+    public static void main(String[] args) throws ParseException, ProblematicTenantException, InterruptedException {
 
 
 //        ZAPIS DO PLIKU:
@@ -32,80 +36,85 @@ public class Main {
 //– wyjęcia przedmiotów lub pojazdów.
 //– wykonania polecenia zapisującego aktualny stan osiedla do pliku
 
-        List<Osiedle> osiedleZielone = new LinkedList<>();
-        List<Osiedle> osiedleCzerwone = new LinkedList<>();
+        List<Osoba> osoby = new LinkedList<>();
+        List<Osiedle> osiedla = new LinkedList<>();
 
-        Mieszkanie pierwszeMieszkanie = new Mieszkanie("Osiedle zielone", "blok pierwszy", 10);
-        Mieszkanie drugieMieszkanie = new Mieszkanie("Osiedle zielone", "blok drugi", 11);
-        Mieszkanie trzecieMieszkanie = new Mieszkanie("Osiedle czerwone", "blok trzeci", 12);
-        Mieszkanie czwarteMieszkanie = new Mieszkanie("Osiedle zielone", "blok drugi", 13);
-        Mieszkanie piateMieszkanie = new Mieszkanie("Osiedle czerwone", "blok drugi", 14);
-        Mieszkanie szosteMieszkanie = new Mieszkanie("Osiedle zielone", "blok drugi", 13);
+        Scanner scanner = new Scanner(System.in);
 
-        MiejsceParkingowe pierwszeMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 1);
-        MiejsceParkingowe drugieMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 2);
-        MiejsceParkingowe trzecieMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 3);
-        MiejsceParkingowe czwarteMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 4);
-        MiejsceParkingowe piateMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 5);
+        System.out.println("Podaj numer PESEL osoby ktora chcesz byc lub wcisnij \"q\" aby zakonczyc program:");
+        String input = scanner.nextLine();
+        Osoba wybranaOsoba = determineOsoba(osoby,input);
 
-        Blok pierwszyBlok = new Blok("Osiedle zielone", "Blok pierwszy");
-        pierwszyBlok.mieszkania.add(pierwszeMieszkanie);
-        osiedleZielone.add(pierwszyBlok);
+        do{
+            input = scanner.nextLine();
+            System.out.println("(1)Wypisz dane osoby, lacznie z wynajetymi pomieszczeniami.");
+            System.out.println("(2)Wyswietl wolne pomieszczenia.");
+            System.out.println("(3)Wynajecie nowego pomieszczenia z listy wolnych.");
+            System.out.println("(4)Wybranie pomieszczenia wynajmowanego i wyswietlenie jego zawartosci.");
+            System.out.println("(5)Wlozenie nowych przedmiotow lub pojazdow.");
+            System.out.println("(6)Wyjecie przedmiotow lub pojazdow");
+            System.out.println("(7)Zapisz aktualny stan osiedla do pliku");
+            System.out.println("Wcisnij \"q\" aby zakonczyc program:");
 
-        osiedleZielone.add(pierwszeMieszkanie);
-        osiedleZielone.add(drugieMieszkanie);
-        osiedleZielone.add(czwarteMieszkanie);
-        osiedleZielone.add(pierwszeMiejsceParkingowe);
-        osiedleZielone.add(drugieMiejsceParkingowe);
-        osiedleZielone.add(czwarteMiejsceParkingowe);
+            switch(input){
+                case "1":
+                    System.out.println(wybranaOsoba);
+                    break;
+                case "2":
+//                    tu moze jakas hashmapa
+                    Osiedle.wyswietlWolnePomieszczenia(osiedla);
+                case "3":
+//                    zamknac to w funkcje
+                    input = scanner.nextLine();
+                    System.out.println("Podaj ID pomieszczenia do wynajecia");
+                    if (input.charAt(3) == 'j'){
+                        MiejsceParkingowe wybraneMiejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla,input);
+                        System.out.println("Podaj date rozpoczecia najmu: ");
+                        String dataRozpoczeciaNajmu = scanner.nextLine();
+                        System.out.println("Podaj date zakonczenia najmu: ");
+                        String dataZakonczeniaNajmu = scanner.nextLine();
+                        wybranaOsoba.wynajmijMiejsceParkingowe(wybraneMiejsceParkingowe,dataRozpoczeciaNajmu,dataZakonczeniaNajmu);
+                    }
+                    else if (input.charAt(3) == 's'){
+                        Mieszkanie wybraneMieszkanie = Osiedle.znajdzMieszkanie(osiedla,input);
+                        System.out.println("Podaj date rozpoczecia najmu: ");
+                        String dataRozpoczeciaNajmu = scanner.nextLine();
+                        System.out.println("Podaj date zakonczenia najmu: ");
+                        String dataZakonczeniaNajmu = scanner.nextLine();
+                        wybranaOsoba.wynajmijMieszkanie(wybraneMieszkanie,dataRozpoczeciaNajmu,dataZakonczeniaNajmu);
+                    }
+                    else {
+                        System.out.println("Niepoprawny numer ID");
+                    }
+                case "4":
+                    input = scanner.nextLine();
+                    System.out.println("Wpisz ID wynajmowanego pomieszczenia aby wyswietlic jego zawartosc: ");
+                    if (input.charAt(3) == 'j'){
+                        MiejsceParkingowe wybraneMiejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla,input);
+                        System.out.println(wybraneMiejsceParkingowe.przedmioty);
+                    }
+                    else if (input.charAt(3) == 's'){
+                        Mieszkanie wybraneMieszkanie = Osiedle.znajdzMieszkanie(osiedla,input);
+                        System.out.println(wybraneMieszkanie.mieszkancy);
+                    }
+                case "5":
+                    input = scanner.nextLine();
+                    System.out.println("Wpisz ID wynajmowanego pomieszczenia aby wlozyc nowe przedmioty: ");
 
-        osiedleCzerwone.add(trzecieMieszkanie);
-        osiedleCzerwone.add(trzecieMiejsceParkingowe);
-        osiedleCzerwone.add(piateMieszkanie);
-        osiedleCzerwone.add(piateMiejsceParkingowe);
-
-        SamochodMiejski samochodMiejski = new SamochodMiejski("Ford", 1, 300, "miejski", "diesel");
-        SamochodMiejski samochodMiejski2 = new SamochodMiejski("Ford", 0.5, 300, "miejski", "diesel");
 
 
-        Osoba kacper = new Osoba("Kacper", "Mlodkowski", "9504045674", "Kazimierza Gorskiego 4", "01.01.1995");
-        Osoba michal = new Osoba("Michal", "Podgorski", "04040404040", "Kazimierza Wysokiego 5", "01.01.1965");
-        Osoba stefan = new Osoba("Stefan", "Klodzki", "12345", "Kazimierza Gorskiego 345345", "01.01.1937");
-        Osoba kamil = new Osoba("Kamil", "Winiarski", "444", "Zeromskiego 10", "01.01.1934");
-        Osoba marek = new Osoba("Marek", "Goczal", "3333", "Michala Aniola 7", "01.01.1925");
+            }
+        } while (input != "q");
+    }
 
-
-        kacper.wynajmijMieszkanie("20-02-2020", "20-04-2020", pierwszeMieszkanie);
-        kacper.wynajmijMieszkanie("20-02-2020", "20-04-2020", drugieMieszkanie);
-        kacper.wynajmijMieszkanie("20-02-2020", "20-04-2020", trzecieMieszkanie);
-        kacper.wynajmijMieszkanie("20-02-2020", "20-04-2020", czwarteMieszkanie);
-//        kacper.wynajmijMieszkanie("20-02-2020", "20-04-2020",piateMieszkanie);
-        kacper.wynajmijMiejsceParkingowe(pierwszeMiejsceParkingowe, "20-02-2020", "20-04-2020");
-        michal.wynajmijMieszkanie("20-02-2020", "20-04-2020", pierwszeMieszkanie);
-        kacper.odnowNajem(pierwszeMieszkanie, "27-03-2020");
-        kacper.odnowNajem(pierwszeMiejsceParkingowe, "20-03-2020");
-//        kacper.wymeldujLokatora(michal,pierwszeMieszkanie);
-//        kacper.zameldujLokatora(michal,pierwszeMieszkanie);
-//        kacper.zameldujLokatora(michal,pierwszeMieszkanie);
-//        kacper.zameldujLokatora(michal,pierwszeMieszkanie);
-//        kacper.zameldujLokatora(michal,pierwszeMieszkanie);
-//        kacper.wypowiedzMieszkanie(piateMieszkanie);
-//        kacper.wypowiedzMiejsceParkingowe(pierwszeMiejsceParkingowe);
-        kacper.anulujNajem(pierwszeMieszkanie);
-        kacper.anulujNajem(pierwszeMiejsceParkingowe);
-
-        try {
-            kacper.wlozPrzedmiot(pierwszeMiejsceParkingowe, samochodMiejski);
-//            kacper.wlozPrzedmiot(czwarteMiejsceParkingowe,samochodMiejski2);
-//            kacper.wyjmijPrzedmiot(pierwszeMiejsceParkingowe,samochodMiejski);
-        } catch (TooManyThingsException e) {
-            e.printStackTrace();
+    public static Osoba determineOsoba(List<Osoba> osoby, String input) {
+        for (Osoba osoba : osoby) {
+            if (input.equals(osoba.PESEL)) {
+                return osoba;
+            } else {
+                System.out.println("Nie ma osoby o podanym PESEL-u.");
+            }
         }
-
-
-        Thread thread = new DateMover(osiedleZielone);
-        thread.start();
-        Thread thread1 = new RentalValidity(osiedleZielone);
-        thread1.start();
+        return null;
     }
 }

@@ -12,6 +12,7 @@ public class MiejsceParkingowe extends Osiedle {
     Date dataZakonczeniaNajmu;
     Osoba najemca;
     boolean zadluzone;
+    boolean wynajete;
 
     List<Przedmiot> przedmioty = new ArrayList<>();
 

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Osoba {
@@ -13,7 +14,7 @@ public class Osoba {
     String adres;
     String dataUrodzenia;
 
-    List<File> pisma = new ArrayList<>();
+    volatile List<File> pisma = new LinkedList<>();
 
     List<Mieszkanie> mieszkania = new ArrayList<>();
     List<MiejsceParkingowe> miejscaParkingowe = new ArrayList<>();
@@ -27,7 +28,7 @@ public class Osoba {
     }
 
     public void zameldujLokatora(Osoba osoba, Mieszkanie mieszkanie) throws ProblematicTenantException {
-        if (howManyFiles(mieszkanie, osoba) > 2 && mieszkanie.najemca == this) {
+        if ((howManyFiles(mieszkanie, osoba) > 2) && mieszkanie.najemca == this) {
 //          sprawdzic czy dziala, jak watki beda ok.
             throw new ProblematicTenantException("Osoba: " + osoba.imie + " " + osoba.nazwisko + " posiada juz Mieszkania: " + osoba.mieszkania + " oraz Miejsca Parkingowe: " + osoba.miejscaParkingowe);
         } else if (mieszkanie.najemca == this && !mieszkanie.mieszkancy.contains(osoba)) {
@@ -52,7 +53,7 @@ public class Osoba {
 
     }
 
-    public void wynajmijMieszkanie(String dataRozpoczeciaNajmu, String dataZakonczeniaNajmu, Mieszkanie mieszkanie) throws ProblematicTenantException, ParseException {
+    public synchronized void wynajmijMieszkanie(Mieszkanie mieszkanie, String dataRozpoczeciaNajmu, String dataZakonczeniaNajmu) throws ProblematicTenantException, ParseException {
         if (howManyFiles(mieszkanie, this) > 2) {
             throw new ProblematicTenantException("Osoba " + this.imie + " " + this.nazwisko + " posiadała już najem pomieszczeń: " + this.miejscaParkingowe + " " + this.mieszkania);
         } else if ((mieszkania.size() + miejscaParkingowe.size()) < 5 && mieszkanie.najemca == null) {
@@ -64,6 +65,7 @@ public class Osoba {
             mieszkanie.mieszkancy.add(this);
             mieszkania.add(mieszkanie);
             System.out.println(this.imie + " Stales sie lokatorem " + mieszkanie.id);
+            mieszkanie.wynajete = true;
         } else if (mieszkanie.najemca != this && (mieszkania.size() + miejscaParkingowe.size()) < 5) {
             System.out.println(mieszkanie.id + " jest juz wynajete.");
         } else {
@@ -72,29 +74,19 @@ public class Osoba {
 
     }
 
-    public void wypowiedzMieszkanie(Mieszkanie mieszkanie) {
-        if (mieszkanie.najemca == this) {
-            mieszkanie.najemca = null;
-            mieszkania.remove(mieszkanie);
-            System.out.println("Mieszkanie wypowiedzone, lokatorzy " + mieszkanie.mieszkancy + " usunieci.");
-            mieszkanie.mieszkancy.clear();
-        } else {
-            System.out.println("Nie mozesz wypowiedzic mieszkania w ktorym nie mieszkasz!");
-        }
-
-    }
 
     public void wynajmijMiejsceParkingowe(MiejsceParkingowe miejsceParkingowe, String dataRozpoczeciaNajmu, String dataZakonczeniaNajmu) throws ParseException, ProblematicTenantException {
 
         if (howManyFiles(miejsceParkingowe, this) > 2) {
             throw new ProblematicTenantException("Osoba " + this.imie + " " + this.nazwisko + " posiadała już najem pomieszczeń: " + this.miejscaParkingowe + " " + this.mieszkania);
-        } else if ((mieszkania.size() + miejscaParkingowe.size()) < 5 && miejsceParkingowe.najemca == null) {
+        } else if ((mieszkania.size() + miejscaParkingowe.size()) < 5 && miejsceParkingowe.najemca == null && posiadaMieszkanieNaTymOsiedlu(miejsceParkingowe)) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             miejsceParkingowe.dataRozpoczeciaNajmu = simpleDateFormat.parse(dataRozpoczeciaNajmu);
             miejsceParkingowe.dataZakonczeniaNajmu = simpleDateFormat.parse(dataZakonczeniaNajmu);
             miejsceParkingowe.najemca = this;
             miejscaParkingowe.add(miejsceParkingowe);
             System.out.println(this.imie + " Stales sie najemca " + miejsceParkingowe.id);
+            miejsceParkingowe.wynajete = true;
         } else if (miejsceParkingowe.najemca != this && (mieszkania.size() + miejscaParkingowe.size()) < 5) {
             System.out.println(miejsceParkingowe.id + " jest juz zajete ");
         } else {
@@ -102,11 +94,27 @@ public class Osoba {
         }
     }
 
+    public void wypowiedzMieszkanie(Mieszkanie mieszkanie) {
+        if (mieszkanie.najemca == this) {
+            mieszkanie.najemca = null;
+            mieszkania.remove(mieszkanie);
+            System.out.println("Mieszkanie wypowiedzone, lokatorzy " + mieszkanie.mieszkancy + " usunieci.");
+            mieszkanie.mieszkancy.clear();
+            mieszkanie.wynajete = false;
+            usunPismo(mieszkanie);
+        } else {
+            System.out.println("Nie mozesz wypowiedzic mieszkania w ktorym nie mieszkasz!");
+        }
+
+    }
+
     public void wypowiedzMiejsceParkingowe(MiejsceParkingowe miejsceParkingowe) {
         if (miejsceParkingowe.najemca == this) {
             miejsceParkingowe.najemca = null;
             miejscaParkingowe.remove(miejsceParkingowe);
             System.out.println("Wypowiedziales " + miejsceParkingowe.id);
+            miejsceParkingowe.wynajete = false;
+            usunPismo(miejsceParkingowe);
         } else {
             System.out.println("Nie mozesz wypowiedzic " + miejsceParkingowe.id + ", ktore nie jest Twoje!");
         }
@@ -137,16 +145,11 @@ public class Osoba {
         }
     }
 
-    public void odnowNajem(Mieszkanie mieszkanie, String doKiedy) throws ParseException {
-        for (File pismo : pisma) {
-            if (pismo.equals("Spozniasz sie z czynszem za: " + mieszkanie.id)) {
-                System.out.println("Usunieto pismo " + pismo.trescPisma + ", bo odnowiles najem." + mieszkanie.id + ", bo odnowiles najem.");
-                pisma.remove(pismo);
-            }
-        }
+    public synchronized void odnowNajem(Mieszkanie mieszkanie, String doKiedy) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date nowaDataZakonczeniaNajmu = simpleDateFormat.parse(doKiedy);
         if (mieszkanie.dataZakonczeniaNajmu.compareTo(nowaDataZakonczeniaNajmu) < 0) {
+            usunPismo(mieszkanie);
             mieszkanie.dataZakonczeniaNajmu = simpleDateFormat.parse(doKiedy);
             mieszkanie.zadluzone = false;
             String newDate = simpleDateFormat.format(mieszkanie.dataZakonczeniaNajmu);
@@ -157,15 +160,10 @@ public class Osoba {
     }
 
     public void odnowNajem(MiejsceParkingowe miejsceParkingowe, String doKiedy) throws ParseException {
-        for (File pismo : pisma) {
-            if (pismo.equals("Spozniasz sie z czynszem za: " + miejsceParkingowe.id)) {
-                System.out.println("Usunieto pismo " + pismo.trescPisma + " za wynajem " + miejsceParkingowe.id + ", bo odnowiles najem.");
-                pisma.remove(pismo);
-            }
-        }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date nowaDataZakonczeniaNajmu = simpleDateFormat.parse(doKiedy);
         if (miejsceParkingowe.dataZakonczeniaNajmu.compareTo(nowaDataZakonczeniaNajmu) < 0) {
+            usunPismo(miejsceParkingowe);
             miejsceParkingowe.dataZakonczeniaNajmu = simpleDateFormat.parse(doKiedy);
             miejsceParkingowe.zadluzone = false;
             String newDate = simpleDateFormat.format(miejsceParkingowe.dataZakonczeniaNajmu);
@@ -175,42 +173,59 @@ public class Osoba {
         }
     }
 
-    public void anulujNajem(Mieszkanie mieszkanie) {
+    public synchronized void usunPismo(Mieszkanie mieszkanie) {
         if (mieszkanie.najemca == this) {
             for (File pismo : pisma) {
-                if (pismo.equals("Spozniasz sie z czynszem za: " + mieszkanie.id)) {
-                    System.out.println("Usunieto pismo  " + pismo.trescPisma + " dotyczace " + mieszkanie.id + ", bo anulowales najem.");
+                if (pismo.dotyczyPomieszczenia.equals(mieszkanie.id)) {
+                    System.out.println("Usunieto pismo: \"" + pismo.trescPisma + "\" dotyczace " + mieszkanie.id);
                     pisma.remove(pismo);
                 }
             }
-            mieszkanie.najemca = null;
-            mieszkanie.zadluzone = false;
         }
-        System.out.println("Najem " + mieszkanie.id + " anulowany.");
+
     }
 
-    public void anulujNajem(MiejsceParkingowe miejsceParkingowe) {
+
+    public synchronized void usunPismo(MiejsceParkingowe miejsceParkingowe) {
         if (miejsceParkingowe.najemca == this) {
             for (File pismo : pisma) {
-                if (pismo.equals("Spozniasz sie z czynszem za: " + miejsceParkingowe.id)) {
-                    System.out.println("Usunieto pismo  " + pismo.trescPisma + " dotyczace " + miejsceParkingowe.id + ", bo anulowales najem.");
+                if (pismo.equals(miejsceParkingowe.id)) {
+                    System.out.println("Usunieto pismo: \"" + pismo.trescPisma + "\" dotyczace " + miejsceParkingowe.id);
                     pisma.remove(pismo);
                 }
             }
-            miejsceParkingowe.najemca = null;
             miejsceParkingowe.zadluzone = false;
         }
-        System.out.println("Najem " + miejsceParkingowe.id + " anulowany.");
     }
 
-    public int howManyFiles(Osiedle pomieszczenie, Osoba osoba) {
+    public synchronized int howManyFiles(Mieszkanie mieszkanie, Osoba osoba) {
         int iloscPismNaJednoOsiedle = 0;
         for (File pismo : osoba.pisma) {
-            if (pomieszczenie.nazwaOsiedla.equals(pismo.dotyczyOsiedla)) {
+            if (mieszkanie.nazwaOsiedla.equals(pismo.dotyczyOsiedla)) {
+                iloscPismNaJednoOsiedle++;
+            }
+        }
+        System.out.println("Ilosc pism na jedno osiedle: " + iloscPismNaJednoOsiedle);
+        return iloscPismNaJednoOsiedle;
+    }
+
+    public synchronized int howManyFiles(MiejsceParkingowe miejsceParkingowe, Osoba osoba) {
+        int iloscPismNaJednoOsiedle = 0;
+        for (File pismo : osoba.pisma) {
+            if (miejsceParkingowe.nazwaOsiedla.equals(pismo.dotyczyOsiedla)) {
                 iloscPismNaJednoOsiedle++;
             }
         }
         return iloscPismNaJednoOsiedle;
+    }
+
+    public synchronized boolean posiadaMieszkanieNaTymOsiedlu(MiejsceParkingowe miejsceParkingowe) {
+        for (Mieszkanie mieszkanie : mieszkania) {
+            if (mieszkanie.nazwaOsiedla.equals(miejsceParkingowe.nazwaOsiedla)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -226,4 +241,5 @@ public class Osoba {
                 ", miejscaParkingowe=" + miejscaParkingowe +
                 '}';
     }
+
 }

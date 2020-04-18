@@ -7,18 +7,14 @@ import java.util.List;
 public class RentalValidity extends Thread {
 
     Calendar calendar;
-    List<Osiedle> osiedleList;
+    List<Osiedle> listaWszystkichOsiedli;
     SimpleDateFormat sdf;
 
-    public RentalValidity(List<Osiedle> osiedleList) {
+    public RentalValidity(DateMover dateMover) {
         sdf = new SimpleDateFormat("dd-MM-yyyy");
-        this.osiedleList = osiedleList;
-        calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, 2020);
-        calendar.set(Calendar.DAY_OF_YEAR, 107);
-        this.osiedleList = osiedleList;
-
-
+        this.listaWszystkichOsiedli = dateMover.listaWszystkichOsiedli;
+        this.calendar = dateMover.c;
+        this.sdf = dateMover.sdf;
     }
 
     @Override
@@ -26,50 +22,55 @@ public class RentalValidity extends Thread {
         Calendar oneMonthFromLeaseEnd = Calendar.getInstance();
         try {
             while (true) {
-                for (Osiedle osiedle : osiedleList) {
+                for (Osiedle osiedle : listaWszystkichOsiedli) {
                     for (Blok blok : osiedle.bloki) {
                         for (Mieszkanie mieszkanie : blok.mieszkania) {
-                            oneMonthFromLeaseEnd.setTime(mieszkanie.dataZakonczeniaNajmu);
-                            oneMonthFromLeaseEnd.add(Calendar.DAY_OF_MONTH, 30);
-                            if (mieszkanie.najemca != null && calendar.getTime().compareTo(mieszkanie.dataZakonczeniaNajmu) > 0 && !czyJestJuzPismo(mieszkanie)) {
-                                spoznionyCzynsz(mieszkanie);
-                                mieszkanie.zadluzone = true;
-                                System.out.println("Spozniasz sie z czynszem!");
-                            } else if (mieszkanie.najemca != null && calendar.getTime().compareTo(oneMonthFromLeaseEnd.getTime()) >= 0) {
-                                eksmisja(mieszkanie);
-                                mieszkanie.zadluzone = false;
+                            if (mieszkanie.wynajete) {
+                                oneMonthFromLeaseEnd.setTime(mieszkanie.dataZakonczeniaNajmu);
+                                oneMonthFromLeaseEnd.add(Calendar.DAY_OF_MONTH, 30);
+
+                                if (mieszkanie.najemca != null && calendar.getTime().compareTo(mieszkanie.dataZakonczeniaNajmu) > 0 && !czyJestJuzPismo(mieszkanie)) {
+                                    spoznionyCzynsz(mieszkanie);
+                                    mieszkanie.zadluzone = true;
+                                }
+
+                                if (mieszkanie.najemca != null && calendar.getTime().compareTo(oneMonthFromLeaseEnd.getTime()) >= 0) {
+                                    eksmisja(mieszkanie);
+                                    mieszkanie.zadluzone = false;
+                                }
                             }
+
                         }
                     }
                     for (MiejsceParkingowe miejsceParkingowe : osiedle.miejscaParkingowe) {
-                        oneMonthFromLeaseEnd.setTime(miejsceParkingowe.dataZakonczeniaNajmu);
-                        oneMonthFromLeaseEnd.add(Calendar.DAY_OF_MONTH, 30);
-                        if (miejsceParkingowe.najemca != null && calendar.getTime().compareTo(miejsceParkingowe.dataZakonczeniaNajmu) > 0 && !czyJestJuzPismo(miejsceParkingowe)) {
-                            spoznionyCzynsz(miejsceParkingowe);
-                            miejsceParkingowe.zadluzone = true;
-                            System.out.println("Spozniasz sie z czynszem!");
-                        } else if (miejsceParkingowe.najemca != null && calendar.getTime().compareTo(oneMonthFromLeaseEnd.getTime()) >= 0) {
-                            eksmisja(miejsceParkingowe);
-                            miejsceParkingowe.zadluzone = false;
+                        if (miejsceParkingowe.wynajete) {
+                            oneMonthFromLeaseEnd.setTime(miejsceParkingowe.dataZakonczeniaNajmu);
+                            oneMonthFromLeaseEnd.add(Calendar.DAY_OF_MONTH, 30);
+                            if (miejsceParkingowe.najemca != null && calendar.getTime().compareTo(miejsceParkingowe.dataZakonczeniaNajmu) > 0 && !czyJestJuzPismo(miejsceParkingowe)) {
+                                spoznionyCzynsz(miejsceParkingowe);
+                                miejsceParkingowe.zadluzone = true;
+                            } else if (miejsceParkingowe.najemca != null && calendar.getTime().compareTo(oneMonthFromLeaseEnd.getTime()) >= 0) {
+                                eksmisja(miejsceParkingowe);
+                                miejsceParkingowe.zadluzone = false;
+                            }
                         }
+
                     }
                 }
                 sleep(10000);
             }
-
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public void eksmisja(Mieszkanie mieszkanie) {
+    public synchronized void eksmisja(Mieszkanie mieszkanie) {
         mieszkanie.mieszkancy.clear();
+        System.out.println(mieszkanie.najemca.imie + ", zostales eksmitowany i wszyscy mieszkancy " + mieszkanie.id + " tez.");
         mieszkanie.najemca = null;
-        System.out.println("Zostales eksmitowany i wszyscy mieszkancy " + mieszkanie.id + " tez.");
     }
 
-    public void eksmisja(MiejsceParkingowe miejsceParkingowe) {
+    public synchronized void eksmisja(MiejsceParkingowe miejsceParkingowe) {
         boolean pojazdInList = false;
         for (Przedmiot przedmiot : miejsceParkingowe.przedmioty) {
             if (przedmiot instanceof Pojazd) {
@@ -81,7 +82,7 @@ public class RentalValidity extends Thread {
                 miejsceParkingowe.dataZakonczeniaNajmu = twoMonthsFromLeaseEnd.getTime();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 String newDate = sdf.format(miejsceParkingowe.dataZakonczeniaNajmu);
-                System.out.println("Zostales eksmitowany z miejsca garazowego i twoj pojazd  " + przedmiot + " tez.");
+                System.out.println(miejsceParkingowe.najemca.imie + ", zostales eksmitowany z " + miejsceParkingowe.id + "i twoj pojazd  " + przedmiot + " tez.");
                 System.out.println("Nowa data zakonczenia najmu to: " + newDate);
             }
         }
@@ -92,38 +93,35 @@ public class RentalValidity extends Thread {
         miejsceParkingowe.najemca = null;
     }
 
-    public void spoznionyCzynsz(Mieszkanie mieszkanie) {
-        File pismo = new File("Spozniasz sie z czynszem za mieszkanie: " + mieszkanie.id, mieszkanie.nazwaOsiedla);
+    public synchronized void spoznionyCzynsz(Mieszkanie mieszkanie) {
+        File pismo = new File(mieszkanie);
         mieszkanie.najemca.pisma.add(pismo);
         System.out.println(pismo.trescPisma);
 
     }
 
-    public void spoznionyCzynsz(MiejsceParkingowe miejsceParkingowe) {
-        File pismo = new File("Spozniasz sie z czynszem za miejsce parkingowe: " + miejsceParkingowe.id, miejsceParkingowe.nazwaOsiedla);
+    public synchronized void spoznionyCzynsz(MiejsceParkingowe miejsceParkingowe) {
+        File pismo = new File(miejsceParkingowe);
         miejsceParkingowe.najemca.pisma.add(pismo);
         System.out.println(pismo.trescPisma);
-
     }
-
-    public boolean czyJestJuzPismo(Mieszkanie mieszkanie) {
+    public synchronized boolean czyJestJuzPismo(Mieszkanie mieszkanie) {
         for (File pismo : mieszkanie.najemca.pisma) {
-            if (pismo.trescPisma.equals("Spozniasz sie z czynszem za mieszkanie: " + mieszkanie.id)) {
-                System.out.println("Juz jest pismo " + mieszkanie.id);
+            if (pismo.dotyczyPomieszczenia.equals(mieszkanie.id)) {
+                System.out.println("Juz jest pismo dla: " + mieszkanie.id);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean czyJestJuzPismo(MiejsceParkingowe miejsceParkingowe) {
+    public synchronized boolean czyJestJuzPismo(MiejsceParkingowe miejsceParkingowe) {
         for (File pismo : miejsceParkingowe.najemca.pisma) {
-            if (pismo.trescPisma.equals("Spozniasz sie z czynszem za mieszkanie: " + miejsceParkingowe.id)) {
+            if (pismo.trescPisma.equals(miejsceParkingowe.id)) {
                 System.out.println("Juz jest pismo dla: " + miejsceParkingowe.id);
                 return true;
             }
         }
         return false;
     }
-
 }

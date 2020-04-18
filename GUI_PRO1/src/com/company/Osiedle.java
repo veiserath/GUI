@@ -12,4 +12,46 @@ public class Osiedle {
     public Osiedle(String nazwaOsiedla) {
         this.nazwaOsiedla = nazwaOsiedla;
     }
+
+    public static void wyswietlWolnePomieszczenia(List<Osiedle> osiedla) {
+        for (Osiedle osiedle : osiedla) {
+            for (Blok blok : osiedle.bloki) {
+                for (Mieszkanie mieszkanie : blok.mieszkania) {
+                    System.out.println(mieszkanie.id + " " + mieszkanie.objetosc);
+
+                }
+            }
+            for (MiejsceParkingowe miejsceParkingowe : osiedle.miejscaParkingowe) {
+                System.out.println(miejsceParkingowe.id + " " + miejsceParkingowe.objetosc);
+
+            }
+        }
+    }
+
+    public static Mieszkanie znajdzMieszkanie(List<Osiedle> osiedla, String idPomieszczenia) {
+
+        for (Osiedle osiedle : osiedla) {
+            for (Blok blok : osiedle.bloki) {
+                for (Mieszkanie mieszkanie : blok.mieszkania) {
+                    if (mieszkanie.id.equals(idPomieszczenia)) {
+                        return mieszkanie;
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
+
+    public static MiejsceParkingowe znajdzMiejsceParkingowe(List<Osiedle> osiedla, String idPomieszczenia) {
+        for (Osiedle osiedle : osiedla) {
+            for (MiejsceParkingowe miejsceParkingowe : osiedle.miejscaParkingowe) {
+                if (miejsceParkingowe.id.equals(idPomieszczenia)) {
+                    return miejsceParkingowe;
+                }
+
+            }
+        }
+        return null;
+    }
 }

@@ -1,7 +1,9 @@
 package com.company;
 
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
+
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -9,18 +11,25 @@ import java.util.List;
 public class DateMover extends Thread {
 
     Date currentDate;
-    private Calendar c;
+    Calendar c;
     SimpleDateFormat sdf;
-    List<Osiedle> osiedleList;
+    List<Osiedle> listaWszystkichOsiedli;
 
+    DateTimeFormatter formatter;
+    public DateMover(List<Osiedle> listaWszystkichOsiedli) {
 
-    public DateMover(List<Osiedle> osiedleList) {
-        sdf = new SimpleDateFormat("dd-MM-yyyy");
-        this.osiedleList = osiedleList;
-        c = Calendar.getInstance();
+//        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        ZonedDateTime now = ZonedDateTime.now();
+//        String formattedNow = now.format(formatter);
+//        System.out.println("Dzieki nowym API data to: " + formattedNow);
 
-        c.set(Calendar.YEAR, 2020);
-        c.set(Calendar.DAY_OF_YEAR, 107);
+        this.sdf = new SimpleDateFormat("dd-MM-yyyy");
+        this.listaWszystkichOsiedli = listaWszystkichOsiedli;
+        this.c = Calendar.getInstance();
+        this.c.set(Calendar.YEAR, 2020);
+        this.c.set(Calendar.DAY_OF_YEAR, 107);
+        Thread thread1 = new RentalValidity(this);
+        thread1.start();
 
     }
 
@@ -31,7 +40,7 @@ public class DateMover extends Thread {
             while (true) {
                 c.add(Calendar.DAY_OF_MONTH, 1);
                 String newDate = sdf.format(c.getTime());
-//                System.out.println("Tutaj zmieniamy: " + newDate);
+                System.out.println("Tutaj zmieniamy: " + newDate);
                 this.sleep(5000);
             }
 

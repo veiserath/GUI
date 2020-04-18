@@ -12,6 +12,7 @@ public class Mieszkanie extends Blok {
     Osoba najemca;
     static int mieszkaniaCreated;
     boolean zadluzone;
+    boolean wynajete;
 
 
     List<Osoba> mieszkancy = new ArrayList<>();
