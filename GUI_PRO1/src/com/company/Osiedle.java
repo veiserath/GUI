@@ -17,7 +17,7 @@ public class Osiedle {
         for (Osiedle osiedle : osiedla) {
             for (Blok blok : osiedle.bloki) {
                 for (Mieszkanie mieszkanie : blok.mieszkania) {
-                    System.out.println(mieszkanie.id + " " + mieszkanie.objetosc);
+                    System.out.println(mieszkanie.getId() + " " + mieszkanie.getObjetosc());
 
                 }
             }
@@ -33,7 +33,7 @@ public class Osiedle {
         for (Osiedle osiedle : osiedla) {
             for (Blok blok : osiedle.bloki) {
                 for (Mieszkanie mieszkanie : blok.mieszkania) {
-                    if (mieszkanie.id.equals(idPomieszczenia)) {
+                    if (mieszkanie.getId().equals(idPomieszczenia)) {
                         return mieszkanie;
                     }
 
@@ -53,5 +53,14 @@ public class Osiedle {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Osiedle{" +
+                "nazwaOsiedla='" + nazwaOsiedla + '\'' +
+                ", bloki=" + bloki +
+                ", miejscaParkingowe=" + miejscaParkingowe +
+                '}';
     }
 }

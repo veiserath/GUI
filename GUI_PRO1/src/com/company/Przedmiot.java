@@ -1,6 +1,6 @@
 package com.company;
 
-public class Przedmiot {
+public class Przedmiot implements Comparable<Przedmiot> {
     String nazwa;
     double objetosc;
 
@@ -14,4 +14,16 @@ public class Przedmiot {
         this.objetosc = dlugosc * szerokosc * wysokosc;
     }
 
+    public String getNazwa() {
+        return nazwa;
+    }
+
+    public double getObjetosc() {
+        return objetosc;
+    }
+
+    @Override
+    public int compareTo(Przedmiot przedmiot) {
+        return this.getNazwa().compareTo(przedmiot.getNazwa());
+    }
 }

@@ -28,25 +28,25 @@ public class Osoba {
     }
 
     public void zameldujLokatora(Osoba osoba, Mieszkanie mieszkanie) throws ProblematicTenantException {
-        if ((howManyFiles(mieszkanie, osoba) > 2) && mieszkanie.najemca == this) {
+        if ((howManyFiles(mieszkanie, osoba) > 2) && mieszkanie.getNajemca() == this) {
 //          sprawdzic czy dziala, jak watki beda ok.
             throw new ProblematicTenantException("Osoba: " + osoba.imie + " " + osoba.nazwisko + " posiada juz Mieszkania: " + osoba.mieszkania + " oraz Miejsca Parkingowe: " + osoba.miejscaParkingowe);
-        } else if (mieszkanie.najemca == this && !mieszkanie.mieszkancy.contains(osoba)) {
-            mieszkanie.mieszkancy.add(osoba);
-            System.out.println("Lokator " + osoba.imie + " zameldowany w " + mieszkanie.id);
+        } else if (mieszkanie.getNajemca() == this && !mieszkanie.mieszkancy.contains(osoba)) {
+            mieszkanie.setMieszkancy().add(osoba);
+            System.out.println("Lokator " + osoba.imie + " zameldowany w " + mieszkanie.getNajemca());
         } else if (mieszkanie.mieszkancy.contains(osoba)) {
-            System.out.println(osoba.imie + " jest juz zameldowana w " + mieszkanie.id);
+            System.out.println(osoba.imie + " jest juz zameldowana w " + mieszkanie.getId());
         } else {
             System.out.println("Tylko najemca może wymeldowywać osoby z mieszkania!");
         }
     }
 
     public void wymeldujLokatora(Osoba osoba, Mieszkanie mieszkanie) {
-        if (mieszkanie.najemca == this && mieszkanie.mieszkancy.contains(osoba)) {
+        if (mieszkanie.getNajemca() == this && mieszkanie.mieszkancy.contains(osoba)) {
             mieszkanie.mieszkancy.remove(osoba);
             System.out.println("Lokator " + osoba.imie + " wymeldowany.");
         } else if (!mieszkanie.mieszkancy.contains(osoba)) {
-            System.out.println(osoba.imie + " nie jest zameldowany w " + mieszkanie.id);
+            System.out.println(osoba.imie + " nie jest zameldowany w " + mieszkanie.getId());
         } else {
             System.out.println("Tylko najemca może usuwać osoby z mieszkania!");
         }
@@ -56,10 +56,10 @@ public class Osoba {
     public synchronized void wynajmijMieszkanie(Mieszkanie mieszkanie, String dataRozpoczeciaNajmu, String dataZakonczeniaNajmu) throws ProblematicTenantException, ParseException {
         if (howManyFiles(mieszkanie, this) > 2) {
             throw new ProblematicTenantException("Osoba " + this.imie + " " + this.nazwisko + " posiadała już najem pomieszczeń: " + this.miejscaParkingowe + " " + this.mieszkania);
-        } else if ((mieszkania.size() + miejscaParkingowe.size()) < 5 && mieszkanie.najemca == null) {
+        } else if ((mieszkania.size() + miejscaParkingowe.size()) < 5 && mieszkanie.getNajemca() == null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            mieszkanie.dataRozpoczeciaNajmu = simpleDateFormat.parse(dataRozpoczeciaNajmu);
-            mieszkanie.dataZakonczeniaNajmu = simpleDateFormat.parse(dataZakonczeniaNajmu);
+            mieszkanie.setDataRozpoczeciaNajmu(simpleDateFormat.parse(dataRozpoczeciaNajmu));
+            mieszkanie.setDataZakonczeniaNajmu(simpleDateFormat.parse(dataZakonczeniaNajmu));
             mieszkanie.najemca = this;
             System.out.println(this.imie + " Stales sie najemca " + mieszkanie.id);
             mieszkanie.mieszkancy.add(this);
@@ -228,18 +228,62 @@ public class Osoba {
         return false;
     }
 
+    public String getImie() {
+        return imie;
+    }
+
+    public String getNazwisko() {
+        return nazwisko;
+    }
+
+    public String getPESEL() {
+        return PESEL;
+    }
+
+    public String getAdres() {
+        return adres;
+    }
+
+    public String getDataUrodzenia() {
+        return dataUrodzenia;
+    }
+
+    public List<File> getPisma() {
+        return pisma;
+    }
+
+    public List<Mieszkanie> getMieszkania() {
+        return mieszkania;
+    }
+
+    public List<MiejsceParkingowe> getMiejscaParkingowe() {
+        return miejscaParkingowe;
+    }
+
+    public void setPisma(List<File> pisma) {
+        this.pisma = pisma;
+    }
+
+    public void setMieszkania(List<Mieszkanie> mieszkania) {
+        this.mieszkania = mieszkania;
+    }
+
+    public void setMiejscaParkingowe(List<MiejsceParkingowe> miejscaParkingowe) {
+        this.miejscaParkingowe = miejscaParkingowe;
+    }
+
     @Override
     public String toString() {
-        return "Osoba{" +
-                "imie='" + imie + '\'' +
+        return "imie='" + imie + '\'' +
                 ", nazwisko='" + nazwisko + '\'' +
                 ", PESEL='" + PESEL + '\'' +
                 ", adres='" + adres + '\'' +
-                ", dataUrodzenia='" + dataUrodzenia + '\'' +
-                ", pisma=" + pisma +
-                ", mieszkania=" + mieszkania +
-                ", miejscaParkingowe=" + miejscaParkingowe +
-                '}';
+                ", dataUrodzenia='" + dataUrodzenia + '\''
+//                ", pisma=" + pisma +
+//                ", mieszkania=" + mieszkania +
+//                ", miejscaParkingowe=" + miejscaParkingowe +
+//                '}'
+                ;
     }
 
 }
