@@ -1,8 +1,8 @@
 package com.company;
 
 public class Przedmiot implements Comparable<Przedmiot> {
-    String nazwa;
-    double objetosc;
+    private String nazwa;
+    private double objetosc;
 
     public Przedmiot(String nazwa, double objetosc) {
         this.nazwa = nazwa;
@@ -24,6 +24,21 @@ public class Przedmiot implements Comparable<Przedmiot> {
 
     @Override
     public int compareTo(Przedmiot przedmiot) {
-        return this.getNazwa().compareTo(przedmiot.getNazwa());
+        if (this.getObjetosc() < przedmiot.getObjetosc()) {
+            return -1;
+        }
+        if (this.getObjetosc() > przedmiot.getObjetosc()) {
+            return 1;
+        }
+        if (this.getObjetosc() == przedmiot.getObjetosc()){
+            return -this.getNazwa().compareTo(przedmiot.getNazwa());
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return  "nazwa='" + nazwa + '\'' +
+                ", objetosc=" + objetosc;
     }
 }

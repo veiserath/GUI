@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Osiedle {
 
-    String nazwaOsiedla;
-    List<Blok> bloki = new ArrayList<>();
-    List<MiejsceParkingowe> miejscaParkingowe = new ArrayList<>();
+    protected String nazwaOsiedla;
+    protected List<Blok> bloki = new ArrayList<>();
+    protected List<MiejsceParkingowe> miejscaParkingowe = new ArrayList<>();
 
     public Osiedle(String nazwaOsiedla) {
         this.nazwaOsiedla = nazwaOsiedla;
@@ -22,7 +22,7 @@ public class Osiedle {
                 }
             }
             for (MiejsceParkingowe miejsceParkingowe : osiedle.miejscaParkingowe) {
-                System.out.println(miejsceParkingowe.id + " " + miejsceParkingowe.objetosc);
+                System.out.println(miejsceParkingowe.getId() + " " + miejsceParkingowe.getObjetosc());
 
             }
         }
@@ -46,13 +46,25 @@ public class Osiedle {
     public static MiejsceParkingowe znajdzMiejsceParkingowe(List<Osiedle> osiedla, String idPomieszczenia) {
         for (Osiedle osiedle : osiedla) {
             for (MiejsceParkingowe miejsceParkingowe : osiedle.miejscaParkingowe) {
-                if (miejsceParkingowe.id.equals(idPomieszczenia)) {
+                if (miejsceParkingowe.getId().equals(idPomieszczenia)) {
                     return miejsceParkingowe;
                 }
 
             }
         }
         return null;
+    }
+
+    public String getNazwaOsiedla() {
+        return nazwaOsiedla;
+    }
+
+    public List<Blok> getBloki() {
+        return bloki;
+    }
+
+    public List<MiejsceParkingowe> getMiejscaParkingowe() {
+        return miejscaParkingowe;
     }
 
     @Override

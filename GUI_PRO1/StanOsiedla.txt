@@ -1,0 +1,6 @@
+Osoby: 
+Osoba: Kacper Mlodkowski
+Posiada mieszkania: 
+[id='Mieszkanie: 3', objetosc=2.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107438', adres='Lema 7', dataUrodzenia='01.01.1995'], id='Mieszkanie: 2', objetosc=4.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107438', adres='Lema 7', dataUrodzenia='01.01.1995'], id='Mieszkanie: 1', objetosc=300.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107438', adres='Lema 7', dataUrodzenia='01.01.1995']]
+Posiada miejsca parkingowe: 
+[id='Miejsce parkingowe: 1', objetosc=3.0, przedmioty: [nazwa='Aercedes G', objetosc=2.5, nazwa='Mercedes G', objetosc=0.5]]

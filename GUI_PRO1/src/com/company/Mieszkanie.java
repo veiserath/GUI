@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-public class Mieszkanie extends Blok implements Comparable<Mieszkanie>{
-    private final String id;
+public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
+    private String id;
     private double objetosc;
     private Date dataRozpoczeciaNajmu;
     private Date dataZakonczeniaNajmu;
@@ -90,18 +90,14 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie>{
         this.wynajete = wynajete;
     }
 
-    public void setMieszkancy(List<Osoba> mieszkancy) {
-        this.mieszkancy = mieszkancy;
-    }
-
 
 
     @Override
     public int compareTo(Mieszkanie mieszkanie) {
-        if (this.getObjetosc() < mieszkanie.getObjetosc()){
+        if (this.getObjetosc() < mieszkanie.getObjetosc()) {
             return -1;
         }
-        if (this.getObjetosc() > mieszkanie.getObjetosc()){
+        if (this.getObjetosc() > mieszkanie.getObjetosc()) {
             return 1;
         }
         return 0;

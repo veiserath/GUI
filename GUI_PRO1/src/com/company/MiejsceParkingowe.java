@@ -1,20 +1,22 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class MiejsceParkingowe extends Osiedle implements Comparable<MiejsceParkingowe> {
-    String id;
-    double objetosc;
-    static int miejscaParkingoweCreated;
-    Date dataRozpoczeciaNajmu;
-    Date dataZakonczeniaNajmu;
-    Osoba najemca;
-    boolean zadluzone;
-    boolean wynajete;
+    private String id;
+    private double objetosc;
+    private static int miejscaParkingoweCreated;
+    private Date dataRozpoczeciaNajmu;
+    private Date dataZakonczeniaNajmu;
+    private Osoba najemca;
+    private boolean zadluzone;
+    private boolean wynajete;
+    private double wolneMiejsce;
 
-    List<Przedmiot> przedmioty = new ArrayList<>();
+    private List<Przedmiot> przedmioty = new ArrayList<>();
 
     public MiejsceParkingowe(String nazwaOsiedla, double objetoscPomieszczenia) {
         super(nazwaOsiedla);
@@ -22,6 +24,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         this.id = "Miejsce parkingowe: " + miejscaParkingoweCreated;
         this.objetosc = objetoscPomieszczenia;
         this.zadluzone = false;
+        this.wolneMiejsce = this.objetosc;
     }
 
     public MiejsceParkingowe(String nazwaOsiedla, double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia) {
@@ -30,6 +33,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         this.id = "Miejsce parkingowe: " + miejscaParkingoweCreated;
         this.objetosc = dlugoscPomieszczenia * szerokoscPomieszczenia * wysokoscPomieszczenia;
         this.zadluzone = false;
+        this.wolneMiejsce = this.objetosc;
     }
 
     public String getId() {
@@ -89,6 +93,14 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         this.przedmioty = przedmioty;
     }
 
+    public double getWolneMiejsce() {
+        return wolneMiejsce;
+    }
+
+    public void setWolneMiejsce(double wolneMiejsce) {
+        this.wolneMiejsce = wolneMiejsce;
+    }
+
     @Override
     public int compareTo(MiejsceParkingowe miejsceParkingowe) {
         if (this.getObjetosc() < miejsceParkingowe.getObjetosc()){
@@ -102,9 +114,11 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
 
     @Override
     public String toString() {
-        return "MiejsceParkingowe{" +
-                "id='" + id + '\'' +
-                ", przedmioty=" + przedmioty +
-                '}';
+        return "id='" + id + '\'' +
+                ", objetosc=" + objetosc +
+                ", przedmioty: " + przedmioty;
+    }
+    public void sortPrzedmioty(){
+        Collections.sort(przedmioty,Collections.reverseOrder());
     }
 }
