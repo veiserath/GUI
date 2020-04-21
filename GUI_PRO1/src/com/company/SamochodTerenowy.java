@@ -1,14 +1,18 @@
 package com.company;
 
-public class SamochodTerenowy extends Pojazd implements IntefejsPojazd {
+public class SamochodTerenowy extends Pojazd {
 
-    public SamochodTerenowy(String nazwa, double objetosc, int pojemnoscSilnika, String typPojazdu, String typSilnika) {
+    Silnik silnik;
+
+
+    public SamochodTerenowy(String nazwa, double objetosc, int pojemnoscSilnika, String typPojazdu, String typSilnika, Silnik silnik) {
         super(nazwa, objetosc, pojemnoscSilnika, typPojazdu, typSilnika);
+        this.silnik = silnik;
     }
 
-    public SamochodTerenowy(String nazwa, double dlugosc, double szerokosc, double wysokosc, int pojemnoscSilnika, String typPojazdu, String typSilnika) {
-
+    public SamochodTerenowy(String nazwa, double dlugosc, double szerokosc, double wysokosc, int pojemnoscSilnika, String typPojazdu, String typSilnika, Silnik silnik) {
         super(nazwa, dlugosc, szerokosc, wysokosc, pojemnoscSilnika, typPojazdu, typSilnika);
+        this.silnik = silnik;
     }
 
     @Override
@@ -28,15 +32,12 @@ public class SamochodTerenowy extends Pojazd implements IntefejsPojazd {
 
     @Override
     public void wysiadz(Osoba osoba) {
-
+        System.out.println("Wysiadam z auta terenowego.");
     }
 
-    @Override
-    public void cofaj(int predkosc) {
 
-    }
 
     public void trybTerenowy() {
-
+        System.out.println("Jade terenowo!");
     }
 }

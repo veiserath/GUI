@@ -1,6 +1,6 @@
 package com.company;
 
-public class Pojazd extends Przedmiot {
+public abstract class Pojazd extends Przedmiot {
     int pojemnoscSilnika;
     String typPojazdu;
     String typSilnika;
@@ -17,5 +17,23 @@ public class Pojazd extends Przedmiot {
         this.pojemnoscSilnika = pojemnoscSilnika;
         this.typPojazdu = typPojazdu;
         this.typSilnika = typSilnika;
+    }
+
+    public void jazda(int predkosc){
+        System.out.println("jade z predkoscia: " + predkosc);
+    }
+
+    public void stop(){
+        System.out.println("Stop!");
+    }
+
+    public void wsiadz(Osoba osoba){
+        System.out.println("Wsiadam!");
+    }
+
+    public abstract void wysiadz(Osoba osoba);
+
+    public void cofaj(int predkosc){
+        System.out.println("Cofam!");
     }
 }

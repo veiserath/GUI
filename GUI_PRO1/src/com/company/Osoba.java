@@ -30,7 +30,7 @@ public class Osoba {
             throw new ProblematicTenantException("Osoba: " + osoba.imie + " " + osoba.nazwisko + " posiada juz Mieszkania: " + osoba.mieszkania + " oraz Miejsca Parkingowe: " + osoba.miejscaParkingowe);
         } else if (mieszkanie.getNajemca() == this && !mieszkanie.getMieszkancy().contains(osoba)) {
             mieszkanie.getMieszkancy().add(osoba);
-            System.out.println("Lokator " + osoba.imie + " zameldowany w " + mieszkanie.getNajemca());
+            System.out.println("Lokator " + osoba.imie + " zameldowany w " + mieszkanie.getId() + " przez: " + mieszkanie.getNajemca());
         } else if (mieszkanie.getMieszkancy().contains(osoba)) {
             System.out.println(osoba.imie + " jest juz zameldowana w " + mieszkanie.getId());
         } else {

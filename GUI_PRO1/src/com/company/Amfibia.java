@@ -1,6 +1,6 @@
 package com.company;
 
-public class Amfibia extends Pojazd implements IntefejsPojazd {
+public class Amfibia extends Pojazd implements Plywajacy {
 
     public Amfibia(String nazwa, double objetosc, int pojemnoscSilnika, String typPojazdu, String typSilnika) {
         super(nazwa, objetosc, pojemnoscSilnika, typPojazdu, typSilnika);
@@ -10,33 +10,18 @@ public class Amfibia extends Pojazd implements IntefejsPojazd {
         super(nazwa, dlugosc, szerokosc, wysokosc, pojemnoscSilnika, typPojazdu, typSilnika);
     }
 
-
-    @Override
-    public void jazda(int predkosc) {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void wsiadz(Osoba osoba) {
-
-    }
-
     @Override
     public void wysiadz(Osoba osoba) {
+        System.out.println("Pamietaj zeby byc na ladzie zanim wysiadziesz!");
+    }
 
+
+    public void wjedzDoRzeki() {
+        System.out.println("Moge prosto z drogi wjechac do rzeki.");
     }
 
     @Override
-    public void cofaj(int predkosc) {
-
-    }
-
-    public void wjedzDoRzeki() {
-
+    public void plywaj() {
+        System.out.println("Plyne!");
     }
 }

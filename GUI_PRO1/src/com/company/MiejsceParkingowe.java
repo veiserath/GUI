@@ -65,7 +65,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
     }
 
     public List<Przedmiot> getPrzedmioty() {
-        return przedmioty;
+        return this.przedmioty;
     }
 
 

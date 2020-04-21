@@ -107,7 +107,7 @@ public class RentalValidity extends Thread {
     public synchronized boolean czyJestJuzPismo(Mieszkanie mieszkanie) {
         for (Pismo pismo : mieszkanie.getNajemca().pisma) {
             if (pismo.dotyczyPomieszczenia.equals(mieszkanie.getId())) {
-                System.out.println("Juz jest pismo dla: " + mieszkanie.getId());
+//                System.out.println("Juz jest pismo dla: " + mieszkanie.getId());
                 return true;
             }
         }
@@ -117,7 +117,7 @@ public class RentalValidity extends Thread {
     public synchronized boolean czyJestJuzPismo(MiejsceParkingowe miejsceParkingowe) {
         for (Pismo pismo : miejsceParkingowe.getNajemca().pisma) {
             if (pismo.trescPisma.equals(miejsceParkingowe.getId())) {
-                System.out.println("Juz jest pismo dla: " + miejsceParkingowe.getId());
+//                System.out.println("Juz jest pismo dla: " + miejsceParkingowe.getId());
                 return true;
             }
         }

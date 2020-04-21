@@ -13,13 +13,8 @@ public class DateMover extends Thread {
     SimpleDateFormat sdf;
     List<Osiedle> osiedla;
 
-    DateTimeFormatter formatter;
     public DateMover(List<Osiedle> osiedla) {
 
-//        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//        ZonedDateTime now = ZonedDateTime.now();
-//        String formattedNow = now.format(formatter);
-//        System.out.println("Dzieki nowym API data to: " + formattedNow);
 
         this.sdf = new SimpleDateFormat("dd-MM-yyyy");
         this.osiedla = osiedla;
@@ -39,13 +34,16 @@ public class DateMover extends Thread {
                 c.add(Calendar.DAY_OF_MONTH, 1);
 //                String newDate = sdf.format(c.getTime());
 //                System.out.println("Tutaj zmieniamy: " + newDate);
-                this.sleep(5000);
+                Thread.sleep(5000);
             }
 
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public void addOneDay(){
+        c.add(Calendar.DAY_OF_MONTH, 1);
     }
 
 
