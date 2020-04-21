@@ -97,97 +97,94 @@ public class Main {
         Thread thread = new DateMover(osiedla);
         thread.start();
 
-        userSelected(osoby, osiedla, przedmioty);
+        MenuSecondLevel(osoby, osiedla, przedmioty, MenuFirstLevel());
+
+
     }
 
     public static String MenuFirstLevel() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Podaj numer PESEL osoby ktora chcesz byc lub wcisnij \"q\" aby zakonczyc program.");
-        System.out.println("Wprowadziles: ");
-        String input = scanner.nextLine();
-        return input;
-    }
-
-    public static Osoba whatPerson(List<Osoba> osoby, String input) {
-        if (input.length() != 11) {
-            System.out.println("Niepoprawny format PESEL");
-            MenuFirstLevel();
-        } else if (input.equals("q")) {
-            System.out.println("Do widzenia!");
-        } else {
-            Osoba wybranaOsoba = determineOsoba(osoby, input);
-            return wybranaOsoba;
-        }
-        return null;
-    }
-
-    public static String MenuSecondLevel(Osoba osoba) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Jestes osoba: " + osoba.getImie() + " " + osoba.getNazwisko());
-        System.out.println("(1) Wypisz dane osoby, lacznie z wynajetymi pomieszczeniami.");
-        System.out.println("(2) Wyswietl wolne pomieszczenia.");
-        System.out.println("(3) Wynajecie nowego pomieszczenia z listy wolnych.");
-        System.out.println("(4) Wybranie pomieszczenia wynajmowanego i wyswietlenie jego zawartosci.");
-        System.out.println("(5) Wlozenie nowych przedmiotow lub pojazdow.");
-        System.out.println("(6) Wyjecie przedmiotow lub pojazdow");
-        System.out.println("(7) Zapisz aktualny stan osiedla do pliku");
-        System.out.println("Wcisnij \"q\" aby zakonczyc program:");
-        System.out.println();
-        System.out.println("Wprowadziles: ");
-        String input = scanner.nextLine();
-        return input;
-    }
-
-    public static void userSelected(List<Osoba> osoby, List<Osiedle> osiedla, List<Przedmiot> przedmioty) throws ParseException, ProblematicTenantException, TooManyThingsException {
-        String firstLevelInput = MenuFirstLevel();
-        Osoba wybranaOsoba = whatPerson(osoby, firstLevelInput);
-        String secondLevelInput;
-        secondLevelInput = MenuSecondLevel(wybranaOsoba);
-
-
+        String input;
         do {
-            secondLevelInput = MenuSecondLevel(whatPerson(osoby, MenuFirstLevel()));
+            System.out.println("Podaj numer PESEL osoby ktora chcesz byc lub wcisnij \"q\" aby zakonczyc program.");
+            System.out.println("Wprowadziles: ");
+            input = scanner.nextLine();
+            return input;
+        } while (input != "q");
+    }
+
+
+    public static void MenuSecondLevel(List<Osoba> osoby, List<Osiedle> osiedla, List<Przedmiot> przedmioty, String firstLevelInput) throws ParseException, ProblematicTenantException, TooManyThingsException {
+        Osoba wybranaOsoba = determineOsoba(osoby, firstLevelInput);
+        char secondLevelInput;
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Jestes osoba: " + wybranaOsoba.getImie() + " " + wybranaOsoba.getNazwisko());
+            System.out.println("(1) Wypisz dane osoby, lacznie z wynajetymi pomieszczeniami.");
+            System.out.println("(2) Wyswietl wolne pomieszczenia.");
+            System.out.println("(3) Wynajecie nowego pomieszczenia z listy wolnych.");
+            System.out.println("(4) Wybranie pomieszczenia wynajmowanego i wyswietlenie jego zawartosci.");
+            System.out.println("(5) Wlozenie nowych przedmiotow lub pojazdow.");
+            System.out.println("(6) Wyjecie przedmiotow lub pojazdow");
+            System.out.println("(7) Zapisz aktualny stan osiedla do pliku");
+            System.out.println("Wcisnij \"q\" aby zakonczyc program:");
+            System.out.println();
+            System.out.println("Wprowadziles: ");
+            secondLevelInput = scanner.next().charAt(0);
+
             switch (secondLevelInput) {
-                case "1":
+                case '1':
                     daneOsoby(wybranaOsoba);
+                    System.out.println();
+
                     break;
-                case "2":
+                case '2':
 //                    tu moze hashmapa
                     Osiedle.wyswietlWolnePomieszczenia(osiedla);
+                    System.out.println();
+
                     break;
-                case "3":
+                case '3':
                     Osiedle.wyswietlWolnePomieszczenia(osiedla);
                     wynajmijPomieszczenie(osiedla, wybranaOsoba);
+                    System.out.println();
                     break;
-                case "4":
+                case '4':
                     daneOsoby(wybranaOsoba);
                     wyswietlZawartoscPomieszczenia(osiedla);
+                    System.out.println();
                     break;
-                case "5":
+                case '5':
                     wlozNowyPrzedmiot(osiedla, przedmioty, wybranaOsoba);
+                    System.out.println();
                     break;
-                case "6":
+                case '6':
                     wyjmijPrzedmiot(osiedla, przedmioty, wybranaOsoba);
+                    System.out.println();
                     break;
-                case "7":
+                case '7':
                     saveToFile(osoby);
+                    System.out.println();
+                    break;
+                case 'q':
+                    System.out.println("Do widzenia!");
                     break;
                 default:
                     System.out.println("Nie ma takiej opcji.");
             }
-        } while (!secondLevelInput.equals("q"));
-        System.out.println("Do widzenia!");
+        } while (secondLevelInput != 'q');
+
     }
 
     public static Osoba determineOsoba(List<Osoba> osoby, String input) {
         for (Osoba osoba : osoby) {
             if (input.equals(osoba.getPESEL())) {
                 return osoba;
-            } else {
-                System.out.println("Nie ma osoby o podanym PESEL-u.");
             }
         }
+        System.out.println("Nie ma osoby o podanym PESEL-u.");
         return null;
+
     }
 
     public static void saveToFile(List<Osoba> osoby) {

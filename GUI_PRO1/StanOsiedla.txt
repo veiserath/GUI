@@ -1,6 +1,22 @@
 Osoby: 
 Osoba: Kacper Mlodkowski
 Posiada mieszkania: 
-[id='Mieszkanie: 3', objetosc=2.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107438', adres='Lema 7', dataUrodzenia='01.01.1995'], id='Mieszkanie: 2', objetosc=4.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107438', adres='Lema 7', dataUrodzenia='01.01.1995'], id='Mieszkanie: 1', objetosc=300.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107438', adres='Lema 7', dataUrodzenia='01.01.1995']]
+[id='Mieszkanie: 1', objetosc=11.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107444', adres='Lema 7', dataUrodzenia='01.01.1995', imie='Michal', nazwisko='Kowalski', PESEL='73735391970', adres='Krzywoustego 6', dataUrodzenia='02.04.1995', imie='Marcin', nazwisko='Nowak', PESEL='39775509351', adres='Ikara 3', dataUrodzenia='01.06.1999'], id='Mieszkanie: 2', objetosc=12.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107444', adres='Lema 7', dataUrodzenia='01.01.1995'], id='Mieszkanie: 3', objetosc=13.0, mieszkancy=[imie='Kacper', nazwisko='Mlodkowski', PESEL='95010107444', adres='Lema 7', dataUrodzenia='01.01.1995']]
 Posiada miejsca parkingowe: 
-[id='Miejsce parkingowe: 1', objetosc=3.0, przedmioty: [nazwa='Aercedes G', objetosc=2.5, nazwa='Mercedes G', objetosc=0.5]]
+[id='Miejsce parkingowe: 1', objetosc=1.0, przedmioty: [nazwa='Aercedes G', objetosc=0.5, nazwa='Mercedes G', objetosc=0.5], id='Miejsce parkingowe: 2', objetosc=2.0, przedmioty: []]Osoba: Michal Kowalski
+Posiada mieszkania: 
+[]
+Posiada miejsca parkingowe: 
+[]Osoba: Marcin Nowak
+Posiada mieszkania: 
+[]
+Posiada miejsca parkingowe: 
+[]Osoba: Stefan Cytrynowski
+Posiada mieszkania: 
+[]
+Posiada miejsca parkingowe: 
+[]Osoba: Kamil Winiarski
+Posiada mieszkania: 
+[id='Mieszkanie: 4', objetosc=14.0, mieszkancy=[imie='Kamil', nazwisko='Winiarski', PESEL='73725942019', adres='Dedala 35', dataUrodzenia='09.03.1997']]
+Posiada miejsca parkingowe: 
+[]
