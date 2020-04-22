@@ -1,13 +1,16 @@
 package com.company;
 
 public class Amfibia extends Pojazd implements Plywajacy {
+    Silnik silnik;
 
-    public Amfibia(String nazwa, double objetosc, int pojemnoscSilnika, String typPojazdu, String typSilnika) {
-        super(nazwa, objetosc, pojemnoscSilnika, typPojazdu, typSilnika);
+    public Amfibia(String nazwa, double objetosc, int pojemnoscSilnika, String typSilnika, Silnik silnik) {
+        super(nazwa, objetosc, pojemnoscSilnika, "Amfibia", typSilnika);
+        this.silnik = silnik;
     }
 
-    public Amfibia(String nazwa, double dlugosc, double szerokosc, double wysokosc, int pojemnoscSilnika, String typPojazdu, String typSilnika) {
-        super(nazwa, dlugosc, szerokosc, wysokosc, pojemnoscSilnika, typPojazdu, typSilnika);
+    public Amfibia(String nazwa, double dlugosc, double szerokosc, double wysokosc, int pojemnoscSilnika, String typSilnika, Silnik silnik) {
+        super(nazwa, dlugosc, szerokosc, wysokosc, pojemnoscSilnika, "Amfibia", typSilnika);
+        this.silnik = silnik;
     }
 
     @Override

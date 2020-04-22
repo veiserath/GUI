@@ -5,13 +5,13 @@ public class SamochodTerenowy extends Pojazd {
     Silnik silnik;
 
 
-    public SamochodTerenowy(String nazwa, double objetosc, int pojemnoscSilnika, String typPojazdu, String typSilnika, Silnik silnik) {
-        super(nazwa, objetosc, pojemnoscSilnika, typPojazdu, typSilnika);
+    public SamochodTerenowy(String nazwa, double objetosc, int pojemnoscSilnika, String typSilnika, Silnik silnik) {
+        super(nazwa, objetosc, pojemnoscSilnika, "SamochodTerenowy", typSilnika);
         this.silnik = silnik;
     }
 
-    public SamochodTerenowy(String nazwa, double dlugosc, double szerokosc, double wysokosc, int pojemnoscSilnika, String typPojazdu, String typSilnika, Silnik silnik) {
-        super(nazwa, dlugosc, szerokosc, wysokosc, pojemnoscSilnika, typPojazdu, typSilnika);
+    public SamochodTerenowy(String nazwa, double dlugosc, double szerokosc, double wysokosc, int pojemnoscSilnika, String typSilnika, Silnik silnik) {
+        super(nazwa, dlugosc, szerokosc, wysokosc, pojemnoscSilnika, "SamochodTerenowy", typSilnika);
         this.silnik = silnik;
     }
 

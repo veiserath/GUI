@@ -64,7 +64,7 @@ public class Osoba {
             System.out.println(this.imie + " Stales sie lokatorem " + mieszkanie.getId());
             mieszkanie.setWynajete(true);
         } else if (mieszkanie.getNajemca() != this && (mieszkania.size() + miejscaParkingowe.size()) < 5) {
-            System.out.println(mieszkanie.getId() + " jest juz wynajete.");
+            System.out.println(this.imie + " " + mieszkanie.getId() + " jest juz wynajete.");
         } else {
             System.out.println("Nie mozesz wynajmowac wiecej mieszkan. Nie udalo się wynajac: " + mieszkanie.getId());
         }
@@ -85,8 +85,9 @@ public class Osoba {
             System.out.println(this.imie + " Stales sie najemca " + miejsceParkingowe.getId());
             miejsceParkingowe.setWynajete(true);
         } else if (miejsceParkingowe.getNajemca() != this && (mieszkania.size() + miejscaParkingowe.size()) < 5) {
-            System.out.println(miejsceParkingowe.getId() + " jest juz zajete ");
-        } else {
+            System.out.println(this.imie + " " + miejsceParkingowe.getId() + " jest juz zajete ");
+        }
+        else {
             System.out.println("Nie mozesz wynajmowac wiecej miejsc parkingowych. Nie udalo sie wynajac: " + miejsceParkingowe.getId());
         }
     }

@@ -10,112 +10,135 @@ import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException, ProblematicTenantException, InterruptedException, TooManyThingsException {
+    public static void main(String[] args) {
+
+        try {
+            List<Osoba> osoby = new LinkedList<>();
+            List<Osiedle> osiedla = new LinkedList<>();
+            List<Przedmiot> przedmioty = new ArrayList<>();
 
 
-        List<Osoba> osoby = new LinkedList<>();
-        List<Osiedle> osiedla = new LinkedList<>();
-        List<Przedmiot> przedmioty = new ArrayList<>();
+            Osiedle osiedleZielone = new Osiedle("Osiedle zielone");
+            Osiedle osiedleCzerwone = new Osiedle("Osiedle czerwone");
+
+            Blok blokPierwszyZielone = new Blok("Osiedle zielone", "Blok Pierwszy");
+            Blok blokDrugiZielone = new Blok("Osiedle zielone", "Blok Drugi");
+            Blok blokPierwszyCzerwone = new Blok("Osiedle czerwone", "Blok Pierwszy");
+
+            Osoba kacper = new Osoba("Kacper", "Mlodkowski", "95010107444", "Lema 7", "01.01.1995");
+            Osoba michal = new Osoba("Michal", "Kowalski", "73735391970", "Krzywoustego 6", "02.04.1995");
+            Osoba stefan = new Osoba("Stefan", "Cytrynowski", "99875525661", "Michala Aniola 3", "02.03.2000");
+            Osoba marcin = new Osoba("Marcin", "Nowak", "39775509351", "Ikara 3", "01.06.1999");
+            Osoba kamil = new Osoba("Kamil", "Winiarski", "73725942019", "Dedala 35", "09.03.1997");
 
 
-        Osiedle osiedleZielone = new Osiedle("Osiedle zielone");
-        Osiedle osiedleCzerwone = new Osiedle("Osiedle czerwone");
+            Mieszkanie pierwszeMieszkanie = new Mieszkanie("Osiedle zielone", "Blok pierwszy", 11);
+            Mieszkanie drugieMieszkanie = new Mieszkanie("Osiedle zielone", "Blok pierwszy", 12);
+            Mieszkanie trzecieMieszkanie = new Mieszkanie("Osiedle zielone", "Blok drugi", 13);
+            Mieszkanie czwarteMieszkanie = new Mieszkanie("Osiedle czerwone", "Blok pierwszy", 14);
+            Mieszkanie piateMieszkanie = new Mieszkanie("Osiedle zielone", "Blok pierwszy", 3, 5, 1);
+            Mieszkanie szosteMieszkanie = new Mieszkanie("Osiedle czerwone", "Blok pierwszy", 1, 3, 1);
 
-        Blok blokPierwszyZielone = new Blok("Osiedle zielone", "Blok Pierwszy");
-        Blok blokDrugiZielone = new Blok("Osiedle zielone", "Blok Drugi");
-        Blok blokPierwszyCzerwone = new Blok("Osiedle czerwone", "Blok Pierwszy");
+            MiejsceParkingowe pierwszeMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 1);
+            MiejsceParkingowe drugieMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 2);
+            MiejsceParkingowe trzecieMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 3);
+            MiejsceParkingowe czwarteMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 4);
+            MiejsceParkingowe piateMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 5);
+            MiejsceParkingowe szosteMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 6);
 
-        Osoba kacper = new Osoba("Kacper", "Mlodkowski", "95010107444", "Lema 7", "01.01.1995");
-        Osoba michal = new Osoba("Michal", "Kowalski", "73735391970", "Krzywoustego 6", "02.04.1995");
-        Osoba stefan = new Osoba("Stefan", "Cytrynowski", "99875525661", "Michala Aniola 3", "02.03.2000");
-        Osoba marcin = new Osoba("Marcin", "Nowak", "39775509351", "Ikara 3", "01.06.1999");
-        Osoba kamil = new Osoba("Kamil", "Winiarski", "73725942019", "Dedala 35", "09.03.1997");
+            kacper.wynajmijMieszkanie(pierwszeMieszkanie, "27-03-2020", "26-04-2020");
+            kacper.wynajmijMieszkanie(drugieMieszkanie, "27-01-2020", "26-04-2020");
+            kacper.zameldujLokatora(michal, pierwszeMieszkanie);
+            marcin.wynajmijMieszkanie(trzecieMieszkanie, "22-06-2019", "22-10-2020");
+            marcin.wynajmijMieszkanie(szosteMieszkanie, "22-06-2019", "22-10-2020");
+            stefan.wynajmijMieszkanie(trzecieMieszkanie, "27-01-2019", "26-05-2020");
+            kamil.wynajmijMieszkanie(czwarteMieszkanie, "27-02-2020", "30-10-2020");
 
+            kacper.wynajmijMiejsceParkingowe(pierwszeMiejsceParkingowe, "27-03-2020", "24-04-2020");
+            kacper.wynajmijMiejsceParkingowe(drugieMiejsceParkingowe, "27-01-2020", "26-04-2020");
+            marcin.wynajmijMiejsceParkingowe(trzecieMiejsceParkingowe, "27-04-2020", "26-09-2020");
+            marcin.wynajmijMiejsceParkingowe(czwarteMiejsceParkingowe, "27-12-2019", "11-11-2020");
+            stefan.wynajmijMiejsceParkingowe(piateMiejsceParkingowe, "27-03-2018", "30-12-2020");
+            kamil.wynajmijMiejsceParkingowe(szosteMiejsceParkingowe, "20-01-2020", "02-10-2020");
 
-        Mieszkanie pierwszeMieszkanie = new Mieszkanie("Osiedle zielone", "Blok pierwszy", 11);
-        Mieszkanie drugieMieszkanie = new Mieszkanie("Osiedle zielone", "Blok pierwszy", 12);
-        Mieszkanie trzecieMieszkanie = new Mieszkanie("Osiedle zielone", "Blok drugi", 13);
-        Mieszkanie czwarteMieszkanie = new Mieszkanie("Osiedle czerwone", "Blok pierwszy", 14);
-        Mieszkanie piateMieszkanie = new Mieszkanie("Osiedle czerwone", "Blok pierwszy", 3, 5, 1);
+            SamochodMiejski samochodMiejski = new SamochodMiejski("Mercedes", 0.5, 1200, "LPG",
+                    () -> System.out.println("brum brum - jestem eko!"));
+            SamochodTerenowy samochodTerenowy = new SamochodTerenowy("Jeep", 0.1, 3000, "diesel",
+                    () -> System.out.println("pyr pyr pyr - leci sadza!"));
+            Lodz lodz = new Lodz("lodz", 0.4, 300, "benzyna",
+                    () -> System.out.println("plum plum!"));
+            Lodz Alodz = new Lodz("Alodz", 0.4, 300, "benzyna",
+                    () -> System.out.println("Aplum Aplum!"));
+            Amfibia amfibia = new Amfibia("Amfibia", 1, 600, "diesel", ()
+                    -> System.out.println("<dzwiek mocnego silnika odpornego na zalanie>!"));
+            Motocykl motocykl = new Motocykl("Motocykl BMW", 0.1, 175, "Benzyna", ()
+                    -> System.out.println("<dzwiek mocnego silnika odpornego na zalanie>!"));
+            Przedmiot obcegi = new Przedmiot("Obcegi", 0.001);
 
-        MiejsceParkingowe pierwszeMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 1);
-        MiejsceParkingowe drugieMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 2);
-        MiejsceParkingowe trzecieMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 3);
-        MiejsceParkingowe czwarteMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 4);
-        MiejsceParkingowe piateMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 5);
-        MiejsceParkingowe szosteMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 6);
+            przedmioty.add(samochodMiejski);
+            przedmioty.add(samochodTerenowy);
+            przedmioty.add(lodz);
+            przedmioty.add(Alodz);
+            przedmioty.add(amfibia);
+            przedmioty.add(motocykl);
+            przedmioty.add(obcegi);
 
-        kacper.wynajmijMieszkanie(pierwszeMieszkanie, "27-03-2020", "26-04-2020");
-        kacper.wynajmijMieszkanie(drugieMieszkanie, "27-01-2020", "26-04-2020");
-        kacper.zameldujLokatora(michal, pierwszeMieszkanie);
-        kacper.zameldujLokatora(marcin, pierwszeMieszkanie);
-        stefan.wynajmijMieszkanie(trzecieMieszkanie, "27-01-2019", "26-05-2020");
-        kamil.wynajmijMieszkanie(czwarteMieszkanie, "27-02-2020", "30-10-2020");
+            lodz.silnik.sprawdzSilnik();
 
-        kacper.wynajmijMiejsceParkingowe(pierwszeMiejsceParkingowe, "27-03-2020", "24-04-2020");
-        kacper.wynajmijMiejsceParkingowe(drugieMiejsceParkingowe, "27-01-2020", "26-04-2020");
-        marcin.wynajmijMiejsceParkingowe(trzecieMiejsceParkingowe, "27-04-2020", "26-09-2020");
-        marcin.wynajmijMiejsceParkingowe(czwarteMiejsceParkingowe, "27-12-2019", "11-11-2020");
-        stefan.wynajmijMiejsceParkingowe(piateMiejsceParkingowe, "27-03-2018", "30-12-2020");
+            samochodMiejski.wsiadz(kacper);
+            amfibia.wjedzDoRzeki();
+            samochodMiejski.silnik.sprawdzSilnik();
+            samochodTerenowy.silnik.sprawdzSilnik();
 
-        SamochodMiejski samochodMiejski = new SamochodMiejski("Mercedes", 0.5, 100, "miejski", "benzyna",
-                () -> {
-                    System.out.println("brum brum - jestem eko!");
-                });
-        SamochodTerenowy samochodTerenowy = new SamochodTerenowy("Jeep", 0.1, 100, "terenowy", "diesel",
-                () -> {
-                    System.out.println("pyr pyr pyr - leci sadza!");
-                });
+            kacper.wlozPrzedmiot(pierwszeMiejsceParkingowe, samochodMiejski);
+            kacper.wlozPrzedmiot(pierwszeMiejsceParkingowe, samochodTerenowy);
+            michal.wlozPrzedmiot(trzecieMiejsceParkingowe, lodz);
+            michal.wlozPrzedmiot(trzecieMiejsceParkingowe, Alodz);
+            kamil.wlozPrzedmiot(szosteMiejsceParkingowe, obcegi);
+            stefan.wlozPrzedmiot(piateMiejsceParkingowe, motocykl);
+            kamil.wlozPrzedmiot(szosteMiejsceParkingowe, amfibia);
 
-        kacper.wlozPrzedmiot(pierwszeMiejsceParkingowe, samochodMiejski);
-        kacper.wlozPrzedmiot(pierwszeMiejsceParkingowe, samochodTerenowy);
+            osiedleZielone.getBloki().add(blokPierwszyZielone);
+            osiedleZielone.getBloki().add(blokDrugiZielone);
+            osiedleCzerwone.getBloki().add(blokPierwszyCzerwone);
 
-        osiedleZielone.getBloki().add(blokPierwszyZielone);
-        osiedleZielone.getBloki().add(blokDrugiZielone);
-        osiedleCzerwone.getBloki().add(blokPierwszyCzerwone);
+            osiedleZielone.getMiejscaParkingowe().add(pierwszeMiejsceParkingowe);
+            osiedleZielone.getMiejscaParkingowe().add(drugieMiejsceParkingowe);
+            osiedleZielone.getMiejscaParkingowe().add(trzecieMiejsceParkingowe);
+            osiedleZielone.getMiejscaParkingowe().add(piateMiejsceParkingowe);
+            osiedleCzerwone.getMiejscaParkingowe().add(czwarteMiejsceParkingowe);
+            osiedleCzerwone.getMiejscaParkingowe().add(szosteMiejsceParkingowe);
 
-        osiedleZielone.getMiejscaParkingowe().add(pierwszeMiejsceParkingowe);
-        osiedleZielone.getMiejscaParkingowe().add(drugieMiejsceParkingowe);
-        osiedleZielone.getMiejscaParkingowe().add(trzecieMiejsceParkingowe);
-        osiedleCzerwone.getMiejscaParkingowe().add(czwarteMiejsceParkingowe);
-        osiedleCzerwone.getMiejscaParkingowe().add(piateMiejsceParkingowe);
-        osiedleCzerwone.getMiejscaParkingowe().add(szosteMiejsceParkingowe);
+            blokPierwszyZielone.getMieszkania().add(pierwszeMieszkanie);
+            blokPierwszyZielone.getMieszkania().add(drugieMieszkanie);
+            blokPierwszyZielone.getMieszkania().add(piateMieszkanie);
+            blokDrugiZielone.getMieszkania().add(trzecieMieszkanie);
+            blokPierwszyCzerwone.getMieszkania().add(czwarteMieszkanie);
+            blokPierwszyCzerwone.getMieszkania().add(szosteMieszkanie);
 
-        blokPierwszyZielone.getMieszkania().add(pierwszeMieszkanie);
-        blokPierwszyZielone.getMieszkania().add(drugieMieszkanie);
-        blokDrugiZielone.getMieszkania().add(trzecieMieszkanie);
-        blokPierwszyCzerwone.getMieszkania().add(czwarteMieszkanie);
-        blokPierwszyCzerwone.getMieszkania().add(piateMieszkanie);
-
-        osoby.add(kacper);
-        osoby.add(michal);
-        osoby.add(marcin);
-        osoby.add(stefan);
-        osoby.add(kamil);
-
-
-        osiedla.add(osiedleZielone);
-        osiedla.add(osiedleCzerwone);
-
-        przedmioty.add(samochodMiejski);
-        przedmioty.add(samochodTerenowy);
-
-        Thread thread = new DateMover(osiedla);
-        thread.start();
-
-        Lodz lodz = new Lodz("lodz", 0.4, 300, "Lodz", "benzyna",
-                () -> {
-                    System.out.println("plum plum!");
-                });
-        lodz.silnik.sprawdzSilnik();
-        przedmioty.add(lodz);
-        samochodMiejski.wsiadz(kacper);
-        samochodMiejski.silnik.sprawdzSilnik();
-        samochodTerenowy.silnik.sprawdzSilnik();
+            osoby.add(kacper);
+            osoby.add(michal);
+            osoby.add(marcin);
+            osoby.add(stefan);
+            osoby.add(kamil);
 
 
-        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        MenuSecondLevel(osoby, osiedla, przedmioty, MenuFirstLevel());
+            osiedla.add(osiedleZielone);
+            osiedla.add(osiedleCzerwone);
+
+            Thread thread = new DateMover(osiedla);
+            thread.start();
+
+
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            MenuSecondLevel(osoby, osiedla, przedmioty, MenuFirstLevel());
+        } catch (ParseException parse) {
+            parse.printStackTrace();
+        } catch (ProblematicTenantException problematicTennant) {
+            problematicTennant.printStackTrace();
+        } catch (TooManyThingsException tooManyThings) {
+            tooManyThings.printStackTrace();
+        }
 
 
     }
@@ -346,7 +369,7 @@ public class Main {
     }
 
     public static void
-    wyjmijPrzedmiot(List<Osiedle> osiedla, List<Przedmiot> przedmioty, Osoba wybranaOsoba) throws TooManyThingsException {
+    wyjmijPrzedmiot(List<Osiedle> osiedla, List<Przedmiot> przedmioty, Osoba wybranaOsoba) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Wpisz ID wynajmowanego pomieszczenia aby wyjac przedmiot: ");
         String input = scanner.nextLine();
