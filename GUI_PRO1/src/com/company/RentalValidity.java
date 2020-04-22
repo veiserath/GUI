@@ -48,7 +48,8 @@ public class RentalValidity extends Thread {
                             if (miejsceParkingowe.getNajemca() != null && calendar.getTime().compareTo(miejsceParkingowe.getDataZakonczeniaNajmu()) > 0 && !czyJestJuzPismo(miejsceParkingowe)) {
                                 spoznionyCzynsz(miejsceParkingowe);
                                 miejsceParkingowe.setZadluzone(true);
-                            } else if (miejsceParkingowe.getNajemca() != null && calendar.getTime().compareTo(oneMonthFromLeaseEnd.getTime()) >= 0) {
+                            }
+                            if (miejsceParkingowe.getNajemca() != null && calendar.getTime().compareTo(oneMonthFromLeaseEnd.getTime()) >= 0) {
                                 eksmisja(miejsceParkingowe);
                                 miejsceParkingowe.setZadluzone(false);
                             }
@@ -64,8 +65,8 @@ public class RentalValidity extends Thread {
     }
 
     public synchronized void eksmisja(Mieszkanie mieszkanie) {
+        System.out.println(mieszkanie.getNajemca().getImie() + ", zostales eksmitowany z " + mieszkanie.getId() + " i wszyscy mieszkancy " + mieszkanie.getMieszkancy() + " tez.");
         mieszkanie.getMieszkancy().clear();
-        System.out.println(mieszkanie.getNajemca().getImie() + ", zostales eksmitowany i wszyscy mieszkancy " + mieszkanie.getId() + " tez.");
         mieszkanie.setNajemca(null);
     }
 
@@ -73,6 +74,7 @@ public class RentalValidity extends Thread {
         boolean pojazdInList = false;
         for (Przedmiot przedmiot : miejsceParkingowe.getPrzedmioty()) {
             if (przedmiot instanceof Pojazd) {
+                System.out.println(miejsceParkingowe.getNajemca().getImie() + ", zostales eksmitowany z " + miejsceParkingowe.getId() + " i twoje przedmioty:  " + przedmiot + " zostaly zlicytowane.");
                 pojazdInList = true;
                 miejsceParkingowe.getPrzedmioty().remove(przedmiot);
                 Calendar twoMonthsFromLeaseEnd = Calendar.getInstance();
@@ -81,13 +83,12 @@ public class RentalValidity extends Thread {
                 miejsceParkingowe.setDataZakonczeniaNajmu(twoMonthsFromLeaseEnd.getTime());
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 String newDate = sdf.format(miejsceParkingowe.getDataZakonczeniaNajmu());
-                System.out.println(miejsceParkingowe.getNajemca().getImie() + ", zostales eksmitowany z " + miejsceParkingowe.getId() + "i twoj pojazd  " + przedmiot + " tez.");
                 System.out.println("Nowa data zakonczenia najmu to: " + newDate);
             }
         }
         if (!pojazdInList) {
-            miejsceParkingowe.getPrzedmioty().clear();
             System.out.println("usunieto przedmioty z " + miejsceParkingowe.getId());
+            miejsceParkingowe.getPrzedmioty().clear();
         }
         miejsceParkingowe.setNajemca(null);
     }
@@ -95,18 +96,19 @@ public class RentalValidity extends Thread {
     public synchronized void spoznionyCzynsz(Mieszkanie mieszkanie) {
         Pismo pismo = new Pismo(mieszkanie);
         mieszkanie.getNajemca().getPisma().add(pismo);
-        System.out.println(pismo.trescPisma);
+        System.out.println(pismo.getTrescPisma());
 
     }
 
     public synchronized void spoznionyCzynsz(MiejsceParkingowe miejsceParkingowe) {
         Pismo pismo = new Pismo(miejsceParkingowe);
         miejsceParkingowe.getNajemca().getPisma().add(pismo);
-        System.out.println(pismo.trescPisma);
+        System.out.println(pismo.getTrescPisma());
     }
+
     public synchronized boolean czyJestJuzPismo(Mieszkanie mieszkanie) {
         for (Pismo pismo : mieszkanie.getNajemca().pisma) {
-            if (pismo.dotyczyPomieszczenia.equals(mieszkanie.getId())) {
+            if (pismo.getDotyczyPomieszczenia().equals(mieszkanie.getId())) {
 //                System.out.println("Juz jest pismo dla: " + mieszkanie.getId());
                 return true;
             }
@@ -116,7 +118,7 @@ public class RentalValidity extends Thread {
 
     public synchronized boolean czyJestJuzPismo(MiejsceParkingowe miejsceParkingowe) {
         for (Pismo pismo : miejsceParkingowe.getNajemca().pisma) {
-            if (pismo.trescPisma.equals(miejsceParkingowe.getId())) {
+            if (pismo.getDotyczyPomieszczenia().equals(miejsceParkingowe.getId())) {
 //                System.out.println("Juz jest pismo dla: " + miejsceParkingowe.getId());
                 return true;
             }

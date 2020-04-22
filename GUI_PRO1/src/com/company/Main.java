@@ -6,20 +6,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws ParseException, ProblematicTenantException, InterruptedException, TooManyThingsException {
-
-
-//        MAIN:
-//         W metodzie main należy utworzyć osiedle wraz z co najmniej dziesięcioma gotowymi po- mieszczeniami różnego typu i rozmiaru oraz kilka (minimum 5) gotowych osób.
-//         Ze wstępnie przydzielonymi najmami oraz umiejscowionymi przedmiotami na miejscach parkingowych.
-
-
-//        Poprawic menu, przetestowac caly program i ulepszyc opcje programistyczne.
 
 
         List<Osoba> osoby = new LinkedList<>();
@@ -52,18 +43,18 @@ public class Main {
         MiejsceParkingowe trzecieMiejsceParkingowe = new MiejsceParkingowe("Osiedle zielone", 3);
         MiejsceParkingowe czwarteMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 4);
         MiejsceParkingowe piateMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 5);
+        MiejsceParkingowe szosteMiejsceParkingowe = new MiejsceParkingowe("Osiedle czerwone", 6);
 
-        kacper.wynajmijMieszkanie(pierwszeMieszkanie, "27-03-2020", "26-06-2020");
-        kacper.wynajmijMieszkanie(drugieMieszkanie, "27-01-2020", "26-08-2020");
-        kacper.wynajmijMieszkanie(trzecieMieszkanie, "27-04-2020", "26-09-2020");
+        kacper.wynajmijMieszkanie(pierwszeMieszkanie, "27-03-2020", "26-04-2020");
+        kacper.wynajmijMieszkanie(drugieMieszkanie, "27-01-2020", "26-04-2020");
         kacper.zameldujLokatora(michal, pierwszeMieszkanie);
         kacper.zameldujLokatora(marcin, pierwszeMieszkanie);
         stefan.wynajmijMieszkanie(trzecieMieszkanie, "27-01-2019", "26-05-2020");
         kamil.wynajmijMieszkanie(czwarteMieszkanie, "27-02-2020", "30-10-2020");
 
-        kacper.wynajmijMiejsceParkingowe(pierwszeMiejsceParkingowe, "27-03-2020", "26-06-2020");
-        kacper.wynajmijMiejsceParkingowe(drugieMiejsceParkingowe, "27-01-2020", "26-08-2020");
-        kacper.wynajmijMiejsceParkingowe(trzecieMiejsceParkingowe, "27-04-2020", "26-09-2020");
+        kacper.wynajmijMiejsceParkingowe(pierwszeMiejsceParkingowe, "27-03-2020", "24-04-2020");
+        kacper.wynajmijMiejsceParkingowe(drugieMiejsceParkingowe, "27-01-2020", "26-04-2020");
+        marcin.wynajmijMiejsceParkingowe(trzecieMiejsceParkingowe, "27-04-2020", "26-09-2020");
         marcin.wynajmijMiejsceParkingowe(czwarteMiejsceParkingowe, "27-12-2019", "11-11-2020");
         stefan.wynajmijMiejsceParkingowe(piateMiejsceParkingowe, "27-03-2018", "30-12-2020");
 
@@ -71,7 +62,7 @@ public class Main {
                 () -> {
                     System.out.println("brum brum - jestem eko!");
                 });
-        SamochodTerenowy samochodTerenowy = new SamochodTerenowy("Jeep", 0.5, 100, "terenowy", "diesel",
+        SamochodTerenowy samochodTerenowy = new SamochodTerenowy("Jeep", 0.1, 100, "terenowy", "diesel",
                 () -> {
                     System.out.println("pyr pyr pyr - leci sadza!");
                 });
@@ -82,6 +73,13 @@ public class Main {
         osiedleZielone.getBloki().add(blokPierwszyZielone);
         osiedleZielone.getBloki().add(blokDrugiZielone);
         osiedleCzerwone.getBloki().add(blokPierwszyCzerwone);
+
+        osiedleZielone.getMiejscaParkingowe().add(pierwszeMiejsceParkingowe);
+        osiedleZielone.getMiejscaParkingowe().add(drugieMiejsceParkingowe);
+        osiedleZielone.getMiejscaParkingowe().add(trzecieMiejsceParkingowe);
+        osiedleCzerwone.getMiejscaParkingowe().add(czwarteMiejsceParkingowe);
+        osiedleCzerwone.getMiejscaParkingowe().add(piateMiejsceParkingowe);
+        osiedleCzerwone.getMiejscaParkingowe().add(szosteMiejsceParkingowe);
 
         blokPierwszyZielone.getMieszkania().add(pierwszeMieszkanie);
         blokPierwszyZielone.getMieszkania().add(drugieMieszkanie);
@@ -104,7 +102,8 @@ public class Main {
 
         Thread thread = new DateMover(osiedla);
         thread.start();
-        Lodz lodz = new Lodz("lodz", 3, 300, "Lodz", "benzyna",
+
+        Lodz lodz = new Lodz("lodz", 0.4, 300, "Lodz", "benzyna",
                 () -> {
                     System.out.println("plum plum!");
                 });
@@ -124,136 +123,120 @@ public class Main {
     public static String MenuFirstLevel() {
         Scanner scanner = new Scanner(System.in);
         String input;
+        boolean isRunning = true;
         do {
             System.out.println("Podaj numer PESEL osoby ktora chcesz byc lub wcisnij \"q\" aby zakonczyc program.");
             System.out.println("Wprowadziles: ");
             input = scanner.nextLine();
-            return input;
-        } while (input != "q");
+            switch (input) {
+                case "q":
+                    isRunning = false;
+                    break;
+                default:
+                    return input;
+            }
+
+        } while (isRunning);
+        return input;
     }
 
 
     public static void MenuSecondLevel(List<Osoba> osoby, List<Osiedle> osiedla, List<Przedmiot> przedmioty, String firstLevelInput) throws ParseException, ProblematicTenantException, TooManyThingsException {
-        Osoba wybranaOsoba = determineOsoba(osoby, firstLevelInput);
-        String secondLevelInput;
-        do {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Jestes osoba: " + wybranaOsoba.getImie() + " " + wybranaOsoba.getNazwisko());
-            System.out.println("(1) Wypisz dane osoby, lacznie z wynajetymi pomieszczeniami.");
-            System.out.println("(2) Wyswietl wolne pomieszczenia.");
-            System.out.println("(3) Wynajecie nowego pomieszczenia z listy wolnych.");
-            System.out.println("(4) Wybranie pomieszczenia wynajmowanego i wyswietlenie jego zawartosci.");
-            System.out.println("(5) Wlozenie nowych przedmiotow lub pojazdow.");
-            System.out.println("(6) Wyjecie przedmiotow lub pojazdow");
-            System.out.println("(7) Zapisz aktualny stan osiedla do pliku");
-            System.out.println("(8) Zamelduj lokatora");
-            System.out.println("(9) Wymelduj lokatora");
-            System.out.println("(10) Anuluj najem mieszkania:");
-            System.out.println("(11) Odnow najem mieszkania:");
-            System.out.println("(12) Anuluj najem miejsca parkingowego:");
-            System.out.println("(13) Odnow najem miejsca parkingowego:");
-            System.out.println("Wcisnij \"q\" aby zakonczyc program:");
-            System.out.println();
-            System.out.println("Wprowadziles: ");
-            secondLevelInput = scanner.nextLine();
+        if (firstLevelInput.equals("q")) {
+            System.out.println("Do widzenia");
+        } else {
+            Osoba wybranaOsoba = determineOsoba(osoby, firstLevelInput);
+            String secondLevelInput;
+            boolean isRunning = true;
+            do {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Jestes osoba: " + wybranaOsoba.getImie() + " " + wybranaOsoba.getNazwisko());
+                System.out.println("(1) Wypisz dane osoby, lacznie z wynajetymi pomieszczeniami.");
+                System.out.println("(2) Wyswietl wolne pomieszczenia.");
+                System.out.println("(3) Wynajecie nowego pomieszczenia z listy wolnych.");
+                System.out.println("(4) Wybranie pomieszczenia wynajmowanego i wyswietlenie jego zawartosci.");
+                System.out.println("(5) Wlozenie nowych przedmiotow lub pojazdow.");
+                System.out.println("(6) Wyjecie przedmiotow lub pojazdow");
+                System.out.println("(7) Zapisz aktualny stan osiedla do pliku");
+                System.out.println("(8) Zamelduj lokatora");
+                System.out.println("(9) Wymelduj lokatora");
+                System.out.println("(10) Anuluj najem mieszkania:");
+                System.out.println("(11) Odnow najem mieszkania:");
+                System.out.println("(12) Anuluj najem miejsca parkingowego:");
+                System.out.println("(13) Odnow najem miejsca parkingowego:");
+                System.out.println("Wcisnij \"q\" aby zakonczyc program:");
+                System.out.println();
+                System.out.println("Wprowadziles: ");
+                secondLevelInput = scanner.nextLine();
 
-            switch (secondLevelInput) {
-                case "1":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println();
-                    break;
-                case "2":
-//                    tu moze hashmapa
-                    Osiedle.wyswietlWolnePomieszczenia(osiedla);
-                    System.out.println();
-                    break;
-                case "3":
-                    Osiedle.wyswietlWolnePomieszczenia(osiedla);
-                    wynajmijPomieszczenie(osiedla, wybranaOsoba);
-                    System.out.println();
-                    break;
-                case "4":
-                    daneOsoby(wybranaOsoba);
-                    wyswietlZawartoscPomieszczenia(osiedla);
-                    System.out.println();
-                    break;
-                case "5":
-                    daneOsoby(wybranaOsoba);
-                    wlozNowyPrzedmiot(osiedla, przedmioty, wybranaOsoba);
-                    System.out.println();
-                    break;
-                case "6":
-                    daneOsoby(wybranaOsoba);
-                    wyjmijPrzedmiot(osiedla, przedmioty, wybranaOsoba);
-                    System.out.println();
-                    break;
-                case "7":
-                    saveToFile(osoby);
-                    System.out.println();
-                    break;
-                case "8":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println("Podaj PESEL lokatora do zameldowania:");
-                    String PESEL = scanner.nextLine();
-                    Osoba osoba = determineOsoba(osoby, PESEL);
-                    System.out.println("Podaj id Mieszkania gdzie go zameldowac:");
-                    String idMieszkania = scanner.nextLine();
-                    Mieszkanie mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
-                    wybranaOsoba.zameldujLokatora(osoba, mieszkanie);
-                    break;
-                case "9":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println("Podaj PESEL lokatora do wymeldowania:");
-                    PESEL = scanner.nextLine();
-                    osoba = determineOsoba(osoby, PESEL);
-                    System.out.println("Podaj id Mieszkania skad go wymeldowac:");
-                    idMieszkania = scanner.nextLine();
-                    mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
-                    wybranaOsoba.wymeldujLokatora(osoba, mieszkanie);
-                    break;
-                case "10":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println("Podaj ID mieszkania do anulowania najmu:");
-                    idMieszkania = scanner.nextLine();
-                    mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
-                    wybranaOsoba.wypowiedzMieszkanie(mieszkanie);
-                    break;
-                case "11":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println("Podaj ID mieszkania do przedluzenia najmu:");
-                    idMieszkania = scanner.nextLine();
-                    System.out.println("Do kiedy chcesz je przedluzyc: ");
-                    String doKiedy = scanner.nextLine();
-                    mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
-                    wybranaOsoba.odnowNajem(mieszkanie, doKiedy);
-                    break;
-                case "12":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println("Podaj ID Miejsca Parkingowego do anulowania najmu:");
-                    String idMiejscaParkingowego = scanner.nextLine();
-                    MiejsceParkingowe miejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla, idMiejscaParkingowego);
-                    wybranaOsoba.wypowiedzMiejsceParkingowe(miejsceParkingowe);
-                    break;
-                case "13":
-                    daneOsoby(wybranaOsoba);
-                    System.out.println("Podaj ID Miejsca Parkingowego do przedluzenia najmu:");
-                    idMiejscaParkingowego = scanner.nextLine();
-                    System.out.println("Do kiedy chcesz je przedluzyc: ");
-                    doKiedy = scanner.nextLine();
-                    miejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla, idMiejscaParkingowego);
-                    wybranaOsoba.odnowNajem(miejsceParkingowe, doKiedy);
-                    break;
-//                case "14":
-//                    System.out.println("Podaj ID Miejsca Parkingowe do wyswietlenia zawartosci: ");
+                switch (secondLevelInput) {
+                    case "1":
+                        daneOsoby(wybranaOsoba);
+                        System.out.println();
+                        break;
+                    case "2":
+                        Osiedle.wyswietlWolnePomieszczenia(osiedla);
+                        System.out.println();
+                        break;
+                    case "3":
+                        Osiedle.wyswietlWolnePomieszczenia(osiedla);
+                        wynajmijPomieszczenie(osiedla, wybranaOsoba);
+                        System.out.println();
+                        break;
+                    case "4":
+                        daneOsoby(wybranaOsoba);
+                        wyswietlZawartoscPomieszczenia(osiedla);
+                        System.out.println();
+                        break;
+                    case "5":
+                        daneOsoby(wybranaOsoba);
+                        wlozNowyPrzedmiot(osiedla, przedmioty, wybranaOsoba);
+                        System.out.println();
+                        break;
+                    case "6":
+                        daneOsoby(wybranaOsoba);
+                        wyjmijPrzedmiot(osiedla, przedmioty, wybranaOsoba);
+                        System.out.println();
+                        break;
+                    case "7":
+                        saveToFile(osoby);
+                        System.out.println();
+                        break;
+                    case "8":
+                        daneOsoby(wybranaOsoba);
+                        zameldujLokatora(osoby, osiedla, wybranaOsoba);
+                        break;
+                    case "9":
+                        daneOsoby(wybranaOsoba);
+                        wymeldujLokatora(osoby, osiedla, wybranaOsoba);
+                        break;
+                    case "10":
+                        daneOsoby(wybranaOsoba);
+                        anulujNajemMieszkania(osiedla, wybranaOsoba);
+                        break;
+                    case "11":
+                        daneOsoby(wybranaOsoba);
+                        przedluzNajemMieszkania(osiedla, wybranaOsoba);
+                        break;
+                    case "12":
+                        daneOsoby(wybranaOsoba);
+                        anulujNajemMiejscaParkingowego(osiedla, wybranaOsoba);
+                        break;
+                    case "13":
+                        daneOsoby(wybranaOsoba);
+                        przedluzWynajemMiejscaParkingowego(osiedla, wybranaOsoba);
+                        break;
+                    case "q":
+                        System.out.println("Do widzenia!");
+                        isRunning = false;
+                        break;
+                    default:
+                        System.out.println("Nie ma takiej opcji.");
+                }
+            } while (isRunning);
 
-                case "q":
-                    System.out.println("Do widzenia!");
-                    break;
-                default:
-                    System.out.println("Nie ma takiej opcji.");
-            }
-        } while (secondLevelInput != "q");
-        System.out.println("Do widzenia!");
+
+        }
 
     }
 
@@ -348,7 +331,7 @@ public class Main {
 
     public static void wlozNowyPrzedmiot(List<Osiedle> osiedla, List<Przedmiot> przedmioty, Osoba wybranaOsoba) throws TooManyThingsException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Wpisz ID wynajmowanego pomieszczenia aby wlozyc nowy przedmiot: ");
+        System.out.println("Wpisz ID Miejsca Parkingowego aby wlozyc nowy przedmiot: ");
         String input = scanner.nextLine();
         MiejsceParkingowe miejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla, input);
         System.out.println("Co chcialbys tam wlozyc? Podaj nazwe przedmiotu do wlozenia: ");
@@ -362,7 +345,8 @@ public class Main {
         wybranaOsoba.wlozPrzedmiot(miejsceParkingowe, przedmiotDoWlozenia);
     }
 
-    public static void wyjmijPrzedmiot(List<Osiedle> osiedla, List<Przedmiot> przedmioty, Osoba wybranaOsoba) throws TooManyThingsException {
+    public static void
+    wyjmijPrzedmiot(List<Osiedle> osiedla, List<Przedmiot> przedmioty, Osoba wybranaOsoba) throws TooManyThingsException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Wpisz ID wynajmowanego pomieszczenia aby wyjac przedmiot: ");
         String input = scanner.nextLine();
@@ -377,5 +361,63 @@ public class Main {
                 wybranaOsoba.wyjmijPrzedmiot(miejsceParkingowe, przedmiot);
             }
         }
+    }
+
+    public static void zameldujLokatora(List<Osoba> osoby, List<Osiedle> osiedla, Osoba wybranaOsoba) throws ProblematicTenantException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj PESEL lokatora do zameldowania:");
+        String PESEL = scanner.nextLine();
+        Osoba osoba = determineOsoba(osoby, PESEL);
+        System.out.println("Podaj id Mieszkania gdzie go zameldowac:");
+        String idMieszkania = scanner.nextLine();
+        Mieszkanie mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
+        wybranaOsoba.zameldujLokatora(osoba, mieszkanie);
+    }
+
+    public static void wymeldujLokatora(List<Osoba> osoby, List<Osiedle> osiedla, Osoba wybranaOsoba) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj PESEL lokatora do wymeldowania:");
+        String PESEL = scanner.nextLine();
+        Osoba osoba = determineOsoba(osoby, PESEL);
+        System.out.println("Podaj id Mieszkania skad go wymeldowac:");
+        String idMieszkania = scanner.nextLine();
+        Mieszkanie mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
+        wybranaOsoba.wymeldujLokatora(osoba, mieszkanie);
+    }
+
+    public static void anulujNajemMieszkania(List<Osiedle> osiedla, Osoba wybranaOsoba) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj ID mieszkania do anulowania najmu:");
+        String idMieszkania = scanner.nextLine();
+        Mieszkanie mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
+        wybranaOsoba.wypowiedzMieszkanie(mieszkanie);
+    }
+
+    public static void przedluzNajemMieszkania(List<Osiedle> osiedla, Osoba wybranaOsoba) throws ParseException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj ID mieszkania do przedluzenia najmu:");
+        String idMieszkania = scanner.nextLine();
+        System.out.println("Do kiedy chcesz je przedluzyc: ");
+        String doKiedy = scanner.nextLine();
+        Mieszkanie mieszkanie = Osiedle.znajdzMieszkanie(osiedla, idMieszkania);
+        wybranaOsoba.odnowNajem(mieszkanie, doKiedy);
+    }
+
+    public static void anulujNajemMiejscaParkingowego(List<Osiedle> osiedla, Osoba wybranaOsoba) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj ID Miejsca Parkingowego do anulowania najmu:");
+        String idMiejscaParkingowego = scanner.nextLine();
+        MiejsceParkingowe miejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla, idMiejscaParkingowego);
+        wybranaOsoba.wypowiedzMiejsceParkingowe(miejsceParkingowe);
+    }
+
+    public static void przedluzWynajemMiejscaParkingowego(List<Osiedle> osiedla, Osoba wybranaOsoba) throws ParseException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj ID Miejsca Parkingowego do przedluzenia najmu:");
+        String idMiejscaParkingowego = scanner.nextLine();
+        System.out.println("Do kiedy chcesz je przedluzyc: ");
+        String doKiedy = scanner.nextLine();
+        MiejsceParkingowe miejsceParkingowe = Osiedle.znajdzMiejsceParkingowe(osiedla, idMiejscaParkingowego);
+        wybranaOsoba.odnowNajem(miejsceParkingowe, doKiedy);
     }
 }

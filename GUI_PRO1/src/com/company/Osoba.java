@@ -93,12 +93,13 @@ public class Osoba {
 
     public void wypowiedzMieszkanie(Mieszkanie mieszkanie) {
         if (mieszkanie.getNajemca() == this) {
+            usunPismo(mieszkanie);
             mieszkanie.setNajemca(null);
             mieszkania.remove(mieszkanie);
             System.out.println("Mieszkanie wypowiedzone, lokatorzy " + mieszkanie.getMieszkancy() + " usunieci.");
             mieszkanie.getMieszkancy().clear();
             mieszkanie.setWynajete(false);
-            usunPismo(mieszkanie);
+
         } else {
             System.out.println("Nie mozesz wypowiedzic mieszkania w ktorym nie mieszkasz!");
         }
@@ -107,11 +108,11 @@ public class Osoba {
 
     public void wypowiedzMiejsceParkingowe(MiejsceParkingowe miejsceParkingowe) {
         if (miejsceParkingowe.getNajemca() == this) {
+            usunPismo(miejsceParkingowe);
             miejsceParkingowe.setNajemca(null);
             miejscaParkingowe.remove(miejsceParkingowe);
             System.out.println("Wypowiedziales " + miejsceParkingowe.getId());
             miejsceParkingowe.setWynajete(false);
-            usunPismo(miejsceParkingowe);
         } else {
             System.out.println("Nie mozesz wypowiedzic " + miejsceParkingowe.getId() + ", ktore nie jest Twoje!");
         }
@@ -173,8 +174,8 @@ public class Osoba {
     public synchronized void usunPismo(Mieszkanie mieszkanie) {
         if (mieszkanie.getNajemca() == this) {
             for (Pismo pismo : pisma) {
-                if (pismo.dotyczyPomieszczenia.equals(mieszkanie.getId())) {
-                    System.out.println("Usunieto pismo: \"" + pismo.trescPisma + "\" dotyczace " + mieszkanie.getId());
+                if (pismo.getDotyczyPomieszczenia().equals(mieszkanie.getId())) {
+                    System.out.println("Usunieto pismo: \"" + pismo.getTrescPisma() + "\" dotyczace " + mieszkanie.getId());
                     pisma.remove(pismo);
                 }
             }
@@ -188,7 +189,7 @@ public class Osoba {
         if (miejsceParkingowe.getNajemca().equals(this)) {
             for (Pismo pismo : pisma) {
                 if (pismo.equals(miejsceParkingowe.getId())) {
-                    System.out.println("Usunieto pismo: \"" + pismo.trescPisma + "\" dotyczace " + miejsceParkingowe.getId());
+                    System.out.println("Usunieto pismo: \"" + pismo.getTrescPisma() + "\" dotyczace " + miejsceParkingowe.getId());
                     pisma.remove(pismo);
                 }
             }
@@ -199,7 +200,7 @@ public class Osoba {
     public synchronized int howManyFiles(Mieszkanie mieszkanie, Osoba osoba) {
         int iloscPismNaJednoOsiedle = 0;
         for (Pismo pismo : osoba.pisma) {
-            if (mieszkanie.nazwaOsiedla.equals(pismo.dotyczyOsiedla)) {
+            if (mieszkanie.nazwaOsiedla.equals(pismo.getDotyczyOsiedla())) {
                 iloscPismNaJednoOsiedle++;
             }
         }
@@ -210,7 +211,7 @@ public class Osoba {
     public synchronized int howManyFiles(MiejsceParkingowe miejsceParkingowe, Osoba osoba) {
         int iloscPismNaJednoOsiedle = 0;
         for (Pismo pismo : osoba.pisma) {
-            if (miejsceParkingowe.nazwaOsiedla.equals(pismo.dotyczyOsiedla)) {
+            if (miejsceParkingowe.nazwaOsiedla.equals(pismo.getDotyczyOsiedla())) {
                 iloscPismNaJednoOsiedle++;
             }
         }
@@ -256,18 +257,6 @@ public class Osoba {
 
     public List<MiejsceParkingowe> getMiejscaParkingowe() {
         return miejscaParkingowe;
-    }
-
-    public void setPisma(List<Pismo> pisma) {
-        this.pisma = pisma;
-    }
-
-    public void setMieszkania(List<Mieszkanie> mieszkania) {
-        this.mieszkania = mieszkania;
-    }
-
-    public void setMiejscaParkingowe(List<MiejsceParkingowe> miejscaParkingowe) {
-        this.miejscaParkingowe = miejscaParkingowe;
     }
 
     @Override

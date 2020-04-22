@@ -38,7 +38,8 @@ public class Motocykl extends Pojazd {
     public void cofaj(int predkosc) {
 
     }
-    public void zalozKask(){
+
+    public void zalozKask() {
 
     }
 }

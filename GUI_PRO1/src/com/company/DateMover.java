@@ -2,8 +2,6 @@ package com.company;
 
 
 import java.text.SimpleDateFormat;
-
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
@@ -42,9 +40,5 @@ public class DateMover extends Thread {
             e.printStackTrace();
         }
     }
-    public void addOneDay(){
-        c.add(Calendar.DAY_OF_MONTH, 1);
-    }
-
 
 }

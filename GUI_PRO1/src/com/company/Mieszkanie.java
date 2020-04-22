@@ -24,6 +24,7 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
         this.id = "Mieszkanie: " + mieszkaniaCreated;
         this.objetosc = dlugoscPomieszczenia * szerokoscPomieszczenia * wysokoscPomieszczenia;
         this.zadluzone = false;
+        this.najemca = null;
     }
 
     public Mieszkanie(String nazwaOsiedla, String nazwaBloku, double objetosc) {
@@ -32,6 +33,7 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
         this.id = "Mieszkanie: " + mieszkaniaCreated;
         this.objetosc = objetosc;
         this.zadluzone = false;
+        this.najemca = null;
     }
 
     public String getId() {
@@ -66,10 +68,6 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
         return mieszkancy;
     }
 
-    public void setObjetosc(double objetosc) {
-        this.objetosc = objetosc;
-    }
-
     public void setDataRozpoczeciaNajmu(Date dataRozpoczeciaNajmu) {
         this.dataRozpoczeciaNajmu = dataRozpoczeciaNajmu;
     }
@@ -89,7 +87,6 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
     public void setWynajete(boolean wynajete) {
         this.wynajete = wynajete;
     }
-
 
 
     @Override

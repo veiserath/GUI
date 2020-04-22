@@ -25,6 +25,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         this.objetosc = objetoscPomieszczenia;
         this.zadluzone = false;
         this.wolneMiejsce = this.objetosc;
+        this.najemca = null;
     }
 
     public MiejsceParkingowe(String nazwaOsiedla, double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia) {
@@ -34,6 +35,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         this.objetosc = dlugoscPomieszczenia * szerokoscPomieszczenia * wysokoscPomieszczenia;
         this.zadluzone = false;
         this.wolneMiejsce = this.objetosc;
+        this.najemca = null;
     }
 
     public String getId() {
@@ -103,10 +105,10 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
 
     @Override
     public int compareTo(MiejsceParkingowe miejsceParkingowe) {
-        if (this.getObjetosc() < miejsceParkingowe.getObjetosc()){
+        if (this.getObjetosc() < miejsceParkingowe.getObjetosc()) {
             return -1;
         }
-        if (this.getObjetosc() > miejsceParkingowe.getObjetosc()){
+        if (this.getObjetosc() > miejsceParkingowe.getObjetosc()) {
             return 1;
         }
         return 0;
@@ -118,7 +120,8 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
                 ", objetosc=" + objetosc +
                 ", przedmioty: " + przedmioty;
     }
-    public void sortPrzedmioty(){
-        Collections.sort(przedmioty,Collections.reverseOrder());
+
+    public void sortPrzedmioty() {
+        Collections.sort(przedmioty, Collections.reverseOrder());
     }
 }

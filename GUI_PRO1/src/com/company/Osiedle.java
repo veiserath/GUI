@@ -18,13 +18,13 @@ public class Osiedle {
             for (Blok blok : osiedle.bloki) {
                 for (Mieszkanie mieszkanie : blok.mieszkania) {
                     if (mieszkanie.getNajemca() == null)
-                    System.out.println(mieszkanie.getId() + " " + mieszkanie.getObjetosc());
+                        System.out.println(mieszkanie.getId() + " " + mieszkanie.getObjetosc());
 
                 }
             }
             for (MiejsceParkingowe miejsceParkingowe : osiedle.miejscaParkingowe) {
                 if (miejsceParkingowe.getNajemca() == null)
-                System.out.println(miejsceParkingowe.getId() + " " + miejsceParkingowe.getObjetosc());
+                    System.out.println(miejsceParkingowe.getId() + " " + miejsceParkingowe.getObjetosc());
 
             }
         }
