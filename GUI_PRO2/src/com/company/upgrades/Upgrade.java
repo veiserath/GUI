@@ -1,4 +1,4 @@
 package com.company.upgrades;
 
-public class CloseBorders {
+public class Upgrade {
 }
