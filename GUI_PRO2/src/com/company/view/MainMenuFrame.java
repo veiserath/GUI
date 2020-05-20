@@ -1,17 +1,22 @@
-package com.company;
+package com.company.view;
+
+import com.company.countries.Country;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-public class MainMenu extends JFrame implements ActionListener {
+public class MainMenuFrame extends JFrame implements ActionListener {
+    List<Country> countries;
     JPanel jPanel;
     JButton buttonNewGame;
     JButton buttonHighScores;
     JButton buttonExit;
 
-    public MainMenu() throws HeadlessException {
+    public MainMenuFrame(List<Country> countries) throws HeadlessException {
+        this.countries = countries;
         this.jPanel = new JPanel();
         jPanel.setLayout(new GridLayout(3, 1));
 
@@ -21,33 +26,36 @@ public class MainMenu extends JFrame implements ActionListener {
         this.buttonHighScores = new JButton("High Scores");
         buttonHighScores.addActionListener(this);
         this.buttonExit = new JButton("Exit");
+        buttonExit.addActionListener(this);
 
         jPanel.add(buttonNewGame);
         jPanel.add(buttonHighScores);
         jPanel.add(buttonExit);
 
         add(jPanel);
-        setVisible(true);
         setTitle("Main Menu");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setVisible(true);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonNewGame){
-            DifficultyLevelsFrame difficultyLevelsFrame = new DifficultyLevelsFrame();
+            SwingUtilities.invokeLater(() -> {
+                DifficultyLevelsFrame difficultyLevelsFrame = new DifficultyLevelsFrame(countries);
+            });
             this.dispose();
         }
         else if (e.getSource() == buttonHighScores){
-            HighScores highScores = new HighScores();
-        }
-        else if (e.getSource() == buttonExit){
+            SwingUtilities.invokeLater(() -> {
+                HighScoresFrame highScoresFrame = new HighScoresFrame();
+            });
             this.dispose();
         }
-
-
-
+        else if (e.getSource() == buttonExit){
+            System.exit(0);
+        }
     }
 }
