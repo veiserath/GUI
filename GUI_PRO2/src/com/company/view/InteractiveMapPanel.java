@@ -1,24 +1,34 @@
 package com.company.view;
 
-import com.company.countries.Country;
-import com.company.view.CountryFrame;
+import com.company.elements.Country;
 
 import javax.swing.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InteractiveMapPanel extends JPanel {
+public class InteractiveMapPanel extends JPanel implements ActionListener {
     JLabel map;
     JButton buttonRussia, buttonAustralia, buttonCanada, buttonEastAfrica, buttonEastEurope,
             buttonGreenland, buttonMidAmerica, buttonMiddleEast, buttonNorthAfrica, buttonNorthEurope,
             buttonSouthAfrica, buttonSouthAsia, buttonSouthEurope, buttonUSA, buttonWestAfrica, buttonWestEurope, buttonSouthAmerica;
     List<Integer> keysDown;
+
+    Timer timer;
+    ImageIcon iconNyanCat;
+    JLabel labelNyanCat;
+
+
     public InteractiveMapPanel(List<Country> countries) throws IOException {
         this.keysDown = new ArrayList<>();
-
+        this.timer = new Timer(5, this);
         this.map = new JLabel(new ImageIcon("worldmap.png"));
+        this.iconNyanCat = new ImageIcon("nyan.png");
+        this.labelNyanCat = new JLabel(iconNyanCat);
+        labelNyanCat.setBounds(0, 0, 30, 30);
+        this.map.add(labelNyanCat);
 
         this.buttonRussia = new JButton("Russia");
         this.buttonAustralia = new JButton("Australia");
@@ -106,64 +116,63 @@ public class InteractiveMapPanel extends JPanel {
             }
         });
         buttonNorthEurope.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonNorthEurope.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonNorthEurope.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonSouthAfrica.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonSouthAfrica.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonSouthAfrica.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonSouthAsia.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonSouthAsia.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonSouthAsia.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonSouthEurope.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonSouthEurope.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonSouthEurope.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonUSA.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonUSA.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonUSA.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonWestAfrica.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonWestAfrica.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonWestAfrica.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonWestEurope.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonWestEurope.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonWestEurope.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
         buttonSouthAmerica.addActionListener(e -> {
-            for (Country country : countries){
-                if (country.getName().equals(buttonSouthAmerica.getText())){
+            for (Country country : countries) {
+                if (country.getName().equals(buttonSouthAmerica.getText())) {
                     CountryFrame countryFrame = new CountryFrame(country);
                 }
             }
         });
 
 
-//        russia.setEnabled(false);
         buttonRussia.setBounds(700, 177, 90, 30);
         buttonAustralia.setBounds(815, 490, 90, 30);
         buttonCanada.setBounds(150, 202, 90, 30);
@@ -204,15 +213,13 @@ public class InteractiveMapPanel extends JPanel {
 
         add(map);
 
+        timer.start();
+    }
+
+    public void actionPerformed(ActionEvent e) {
+
+        labelNyanCat.setBounds(labelNyanCat.getX() + 1, labelNyanCat.getY() + 1, iconNyanCat.getIconWidth(), iconNyanCat.getIconHeight());
 
     }
 
-//    @Override
-//    protected void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        if (bg != null) {
-//            g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-//        }
-//
-//    }
 }

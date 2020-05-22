@@ -1,13 +1,13 @@
 package com.company.view;
 
-import com.company.countries.Country;
+import com.company.elements.Country;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CountryFrame extends JFrame {
-    JPanel countryParametersPanel;
-    JPanel gameUpgradesPanel;
+    private JPanel countryParametersPanel;
+    private JPanel gameUpgradesPanel;
 
     public CountryFrame(Country country) {
 
@@ -16,15 +16,13 @@ public class CountryFrame extends JFrame {
         this.gameUpgradesPanel = new GameUpgradesPanel(country);
 
 
-        add(countryParametersPanel,BorderLayout.NORTH);
-        add(gameUpgradesPanel,BorderLayout.SOUTH);
+        add(countryParametersPanel, BorderLayout.NORTH);
+        add(gameUpgradesPanel, BorderLayout.SOUTH);
 
-//        setPreferredSize(new Dimension(300, 300));
         pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
-
 
 
     }

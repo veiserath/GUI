@@ -1,11 +1,13 @@
-package com.company.upgrades;
+package com.company.elements;
 
 public class Upgrade {
-    String name;
-    long costInPoints;
-    long effects;
+    private String name;
+    private long costInPoints;
+    private long effects;
+
 
     public Upgrade(String name, long costInPoints, long effects) {
+
         this.name = name;
         this.costInPoints = costInPoints;
         this.effects = effects;

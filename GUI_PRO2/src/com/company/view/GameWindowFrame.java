@@ -1,7 +1,7 @@
 package com.company.view;
 
 import com.company.controller.CountryParameters;
-import com.company.countries.Country;
+import com.company.elements.Country;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,13 +16,16 @@ public class GameWindowFrame extends JFrame implements KeyListener {
     JPanel interactiveMapPanel;
     ArrayList<Integer> keysDown;
     List<Country> countries;
+    GameParametersPanel gameParametersPanel;
 
 
     public GameWindowFrame(List<Country> countries) throws IOException {
         this.countries = countries;
+        this.gameParametersPanel = new GameParametersPanel(countries);
+        this.interactiveMapPanel = new InteractiveMapPanel(countries);
         setFocusable(true);
 
-        Thread countryParameters = new CountryParameters(countries);
+        Thread countryParameters = new CountryParameters(countries, gameParametersPanel.getGameTime());
         countryParameters.start();
 
         this.keysDown = new ArrayList<>();
@@ -31,13 +34,8 @@ public class GameWindowFrame extends JFrame implements KeyListener {
         setLayout(new BorderLayout());
         setTitle("Game Window");
 
-//        this.gameParametersPanel = new GameParametersPanel();
-        this.interactiveMapPanel = new InteractiveMapPanel(countries);
-
-
-//        add(gameParametersPanel, BorderLayout.NORTH);
-        add(interactiveMapPanel, BorderLayout.CENTER);
-
+        add(gameParametersPanel, BorderLayout.NORTH);
+        add(interactiveMapPanel, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -61,10 +59,10 @@ public class GameWindowFrame extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!keysDown.contains(new Integer(e.getKeyCode()))){
+        if (!keysDown.contains(new Integer(e.getKeyCode()))) {
             keysDown.add(e.getKeyCode());
         }
-        if (keysDown.contains(new Integer(16)) && keysDown.contains(new Integer(17)) && keysDown.contains(new Integer(79))){
+        if (keysDown.contains(new Integer(16)) && keysDown.contains(new Integer(17)) && keysDown.contains(new Integer(79))) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -75,8 +73,11 @@ public class GameWindowFrame extends JFrame implements KeyListener {
         }
     }
 
+
     @Override
     public void keyReleased(KeyEvent e) {
         keysDown.remove(new Integer((e.getKeyCode())));
     }
+
+
 }

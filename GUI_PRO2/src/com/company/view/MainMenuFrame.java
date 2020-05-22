@@ -1,6 +1,6 @@
 package com.company.view;
 
-import com.company.countries.Country;
+import com.company.elements.Country;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +9,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class MainMenuFrame extends JFrame implements ActionListener {
-    List<Country> countries;
-    JPanel jPanel;
-    JButton buttonNewGame;
-    JButton buttonHighScores;
-    JButton buttonExit;
+    private List<Country> countries;
+    private JPanel jPanel;
+    private JButton buttonNewGame;
+    private JButton buttonHighScores;
+    private JButton buttonExit;
 
     public MainMenuFrame(List<Country> countries) throws HeadlessException {
         this.countries = countries;
@@ -42,19 +42,17 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonNewGame){
+        if (e.getSource() == buttonNewGame) {
             SwingUtilities.invokeLater(() -> {
                 DifficultyLevelsFrame difficultyLevelsFrame = new DifficultyLevelsFrame(countries);
             });
             this.dispose();
-        }
-        else if (e.getSource() == buttonHighScores){
+        } else if (e.getSource() == buttonHighScores) {
             SwingUtilities.invokeLater(() -> {
                 HighScoresFrame highScoresFrame = new HighScoresFrame();
             });
             this.dispose();
-        }
-        else if (e.getSource() == buttonExit){
+        } else if (e.getSource() == buttonExit) {
             System.exit(0);
         }
     }

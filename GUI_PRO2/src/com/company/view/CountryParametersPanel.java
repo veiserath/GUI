@@ -1,13 +1,12 @@
 package com.company.view;
 
-import com.company.countries.Country;
+import com.company.elements.Country;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CountryParametersPanel extends JPanel {
     Country country;
-
     JLabel labelInfected;
     JLabel labelCured;
     JLabel labelDead;
@@ -35,14 +34,15 @@ public class CountryParametersPanel extends JPanel {
 
     }
 
-    public void updateParameters(){
-            this.labelInfected.setText("Infected: " + country.getInfected());
-            this.labelCured.setText("Cured: " + country.getCured());
-            this.labelDead.setText("Dead: " + country.getDied());
-            this.labelPoints.setText("Points: " + country.getPoints());
+    public void updateParameters() {
+        this.labelInfected.setText("Infected: " + country.getInfected());
+        this.labelCured.setText("Cured: " + country.getCured());
+        this.labelDead.setText("Dead: " + country.getDied());
+        this.labelPoints.setText("Points: " + country.getPoints());
     }
+
     Thread thread = new Thread(() -> {
-        while (true){
+        while (!Thread.interrupted()) {
             updateParameters();
         }
     });

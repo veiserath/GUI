@@ -31,7 +31,7 @@ public class HighScoresFrame extends JFrame {
         setTitle("High Scores - higher ranking is better");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setPreferredSize(new Dimension(300,300));
+        setPreferredSize(new Dimension(300, 300));
         pack();
         setVisible(true);
     }

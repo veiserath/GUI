@@ -40,14 +40,12 @@ public class Ranking implements Serializable {
     public void addRank(String name, long time, long infected, long cured, long died, String difficulty) {
 
         long formula = 0;
-        if (difficulty.equals("Beginner")){
-            formula = cured*100-infected-time-died;
-        }
-        else if (difficulty.equals("Intermediate")){
-            formula = cured*200-infected-time-died;
-        }
-        else if (difficulty.equals("Expert")){
-            formula = cured*300-infected-time-died;
+        if (difficulty.equals("Beginner")) {
+            formula = cured * 100 - infected - time - died;
+        } else if (difficulty.equals("Intermediate")) {
+            formula = cured * 200 - infected - time - died;
+        } else if (difficulty.equals("Expert")) {
+            formula = cured * 300 - infected - time - died;
         }
         this.highScoresData.addElement(name + " ranking: " + formula);
         saveData();

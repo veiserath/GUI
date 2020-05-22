@@ -1,7 +1,7 @@
 package com.company.view;
 
 import com.company.controller.GameOver;
-import com.company.countries.Country;
+import com.company.elements.Country;
 
 import javax.swing.*;
 import java.awt.*;
