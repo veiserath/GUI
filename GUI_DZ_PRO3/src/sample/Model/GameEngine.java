@@ -27,7 +27,7 @@ public class GameEngine {
     }
 
     private ArrayList<KeyCode> keysDown = new ArrayList<KeyCode>();
-    private List<GameWindowApplication.SnakeSegment> snake = new ArrayList<>();
+    private List<SnakeSegment> snake = new ArrayList<>();
 
 
     private GameTime gameTime;
@@ -52,10 +52,11 @@ public class GameEngine {
         this.height = gameWindowApplication.getHeight();
         random = new Random();
 
-
         newFood();
         gameTime = new GameTime();
         gameTime.start();
+
+        snake.add(new SnakeSegment(width / 2, height / 2));
     }
 
     public static class SnakeSegment {
@@ -69,27 +70,6 @@ public class GameEngine {
     }
 
 
-    public void start(Stage primaryStage) {
-
-//        all dimensions will be later calculated in terms of "corners"
-
-        
-
-        quitShortcut();
-        snakeControls();
-
-        snake.add(new GameWindowApplication.SnakeSegment(width / 2, height / 2));
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Snake Game");
-        primaryStage.show();
-
-
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     public void gameLoop() {
 
@@ -132,26 +112,26 @@ public class GameEngine {
         }
     }
 
-    public void quitShortcut() {
-
-        scene.setOnKeyPressed(event -> {
-            if (!keysDown.contains(event.getCode())) {
-                keysDown.add(event.getCode());
-            }
-            if (keysDown.contains(KeyCode.O) && keysDown.contains(KeyCode.SHIFT) && keysDown.contains(KeyCode.CONTROL)) {
-                MainMenuApplication mainMenuApplication = new MainMenuApplication();
-                mainMenuApplication.start(primaryStage);
-            }
-        });
-        scene.setOnKeyReleased(event ->
-                keysDown.remove(event.getCode())
-        );
-    }
+//    public void quitShortcut() {
+//
+//        scene.setOnKeyPressed(event -> {
+//            if (!keysDown.contains(event.getCode())) {
+//                keysDown.add(event.getCode());
+//            }
+//            if (keysDown.contains(KeyCode.O) && keysDown.contains(KeyCode.SHIFT) && keysDown.contains(KeyCode.CONTROL)) {
+//                MainMenuApplication mainMenuApplication = new MainMenuApplication();
+//                mainMenuApplication.start(primaryStage);
+//            }
+//        });
+//        scene.setOnKeyReleased(event ->
+//                keysDown.remove(event.getCode())
+//        );
+//    }
 
     public void eatFood() {
 
         if (foodX == snake.get(0).x && foodY == snake.get(0).y && !specialUpgradeFood) {
-            snake.add(new GameWindowApplication.SnakeSegment(-1, -1));
+            snake.add(new SnakeSegment(-1, -1));
             newFood();
             score++;
             speed++;
@@ -166,25 +146,25 @@ public class GameEngine {
         }
     }
 
-    public void displayScore() {
-
-        graphicsContext.setFill(Color.WHITE);
-        graphicsContext.setFont(new Font("", 30));
-        graphicsContext.fillText("Score: " + score, 10, 30);
-    }
-
-    public void displayTime() {
-
-        graphicsContext.setFill(Color.WHITE);
-        graphicsContext.setFont(new Font("", 30));
-        graphicsContext.fillText("Time: " + gameTime.getMinutes() + " : " + gameTime.getSeconds(), 200, 30);
-    }
-
-    public void fillBackground() {
-
-        graphicsContext.setFill(Color.BLACK);
-        graphicsContext.fillRect(0, 0, width * cornerSize, width * cornerSize);
-    }
+//    public void displayScore() {
+//
+//        graphicsContext.setFill(Color.WHITE);
+//        graphicsContext.setFont(new Font("", 30));
+//        graphicsContext.fillText("Score: " + score, 10, 30);
+//    }
+//
+//    public void displayTime() {
+//
+//        graphicsContext.setFill(Color.WHITE);
+//        graphicsContext.setFont(new Font("", 30));
+//        graphicsContext.fillText("Time: " + gameTime.getMinutes() + " : " + gameTime.getSeconds(), 200, 30);
+//    }
+//
+//    public void fillBackground() {
+//
+//        graphicsContext.setFill(Color.BLACK);
+//        graphicsContext.fillRect(0, 0, width * cornerSize, width * cornerSize);
+//    }
 
     public void selfDestruct() {
 
@@ -196,90 +176,90 @@ public class GameEngine {
     }
 
     //  doesn't work for some reason?
-    public void setGameOverMessage() {
+//    public void setGameOverMessage() {
+//
+//        if (gameOver) {
+//            System.out.println("Game is over");
+//            graphicsContext.setFill(Color.RED);
+//            graphicsContext.setFont(new Font("", 50));
+//            graphicsContext.setTextAlign(TextAlignment.CENTER);
+//            graphicsContext.fillText("Game over", canvas.getWidth() / 2, canvas.getHeight() / 2);
+//        }
+//
+//
+//    }
 
-        if (gameOver) {
-            System.out.println("Game is over");
-            graphicsContext.setFill(Color.RED);
-            graphicsContext.setFont(new Font("", 50));
-            graphicsContext.setTextAlign(TextAlignment.CENTER);
-            graphicsContext.fillText("Game over", canvas.getWidth() / 2, canvas.getHeight() / 2);
-        }
+//    public void snakeLook() {
+//
+//        for (GameWindowApplication.SnakeSegment snakeSegment : snake) {
+////            these two colors combined make a shadow - wow!
+//            graphicsContext.setFill(Color.LIGHTGREEN);
+//            graphicsContext.fillRect(snakeSegment.x * cornerSize, snakeSegment.y * cornerSize, cornerSize - 1, cornerSize - 1);
+//            graphicsContext.setFill(Color.GREEN);
+//            graphicsContext.fillRect(snakeSegment.x * cornerSize, snakeSegment.y * cornerSize, cornerSize - 2, cornerSize - 2);
+//        }
+//    }
+
+//    public void randomFoodColor() {
+//
+//        if (specialUpgradeFood) {
+//            foodColor = random.nextInt(9);
+//        }
+//        Color randomFoodColor;
+//
+//        switch (foodColor) {
+//            case 0:
+//                randomFoodColor = Color.PURPLE;
+//                break;
+//            case 1:
+//                randomFoodColor = Color.LIGHTBLUE;
+//                break;
+//            case 2:
+//                randomFoodColor = Color.YELLOW;
+//                break;
+//            case 3:
+//                randomFoodColor = Color.PINK;
+//                break;
+//            case 4:
+//                randomFoodColor = Color.ORANGE;
+//                break;
+//            case 5:
+//                randomFoodColor = Color.MAGENTA;
+//                break;
+//            case 6:
+//                randomFoodColor = Color.BLUE;
+//                break;
+//            case 7:
+//                randomFoodColor = Color.BROWN;
+//                break;
+//            case 8:
+//                randomFoodColor = Color.GREEN;
+//                break;
+//            default:
+//                randomFoodColor = Color.WHITE;
+//        }
+//        graphicsContext.setFill(randomFoodColor);
+//        graphicsContext.fillOval(foodX * cornerSize, foodY * cornerSize, cornerSize, cornerSize);
+//    }
 
 
-    }
-
-    public void snakeLook() {
-
-        for (GameWindowApplication.SnakeSegment snakeSegment : snake) {
-//            these two colors combined make a shadow - wow!
-            graphicsContext.setFill(Color.LIGHTGREEN);
-            graphicsContext.fillRect(snakeSegment.x * cornerSize, snakeSegment.y * cornerSize, cornerSize - 1, cornerSize - 1);
-            graphicsContext.setFill(Color.GREEN);
-            graphicsContext.fillRect(snakeSegment.x * cornerSize, snakeSegment.y * cornerSize, cornerSize - 2, cornerSize - 2);
-        }
-    }
-
-    public void randomFoodColor() {
-
-        if (specialUpgradeFood) {
-            foodColor = random.nextInt(9);
-        }
-        Color randomFoodColor;
-
-        switch (foodColor) {
-            case 0:
-                randomFoodColor = Color.PURPLE;
-                break;
-            case 1:
-                randomFoodColor = Color.LIGHTBLUE;
-                break;
-            case 2:
-                randomFoodColor = Color.YELLOW;
-                break;
-            case 3:
-                randomFoodColor = Color.PINK;
-                break;
-            case 4:
-                randomFoodColor = Color.ORANGE;
-                break;
-            case 5:
-                randomFoodColor = Color.MAGENTA;
-                break;
-            case 6:
-                randomFoodColor = Color.BLUE;
-                break;
-            case 7:
-                randomFoodColor = Color.BROWN;
-                break;
-            case 8:
-                randomFoodColor = Color.GREEN;
-                break;
-            default:
-                randomFoodColor = Color.WHITE;
-        }
-        graphicsContext.setFill(randomFoodColor);
-        graphicsContext.fillOval(foodX * cornerSize, foodY * cornerSize, cornerSize, cornerSize);
-    }
-
-
-    public void snakeControls() {
-
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            if (key.getCode() == KeyCode.W) {
-                direction = GameWindowApplication.Direction.UP;
-            }
-            if (key.getCode() == KeyCode.S) {
-                direction = GameWindowApplication.Direction.DOWN;
-            }
-            if (key.getCode() == KeyCode.D) {
-                direction = GameWindowApplication.Direction.RIGHT;
-            }
-            if (key.getCode() == KeyCode.A) {
-                direction = GameWindowApplication.Direction.LEFT;
-            }
-        });
-    }
+//    public void snakeControls() {
+//
+//        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+//            if (key.getCode() == KeyCode.W) {
+//                direction = GameWindowApplication.Direction.UP;
+//            }
+//            if (key.getCode() == KeyCode.S) {
+//                direction = GameWindowApplication.Direction.DOWN;
+//            }
+//            if (key.getCode() == KeyCode.D) {
+//                direction = GameWindowApplication.Direction.RIGHT;
+//            }
+//            if (key.getCode() == KeyCode.A) {
+//                direction = GameWindowApplication.Direction.LEFT;
+//            }
+//        });
+//    }
 
     public void growSnake() {
 
