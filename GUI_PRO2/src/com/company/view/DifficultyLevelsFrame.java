@@ -55,14 +55,11 @@ public class DifficultyLevelsFrame extends JFrame implements ActionListener {
         }
 
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    GameWindowFrame gameWindowFrame = new GameWindowFrame(countries);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                GameWindowFrame gameWindowFrame = new GameWindowFrame(countries);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 

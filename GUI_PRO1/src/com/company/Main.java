@@ -279,7 +279,6 @@ public class Main {
 
         sb.append("Osoby: \n");
 
-
         for (Osoba osoba : osoby) {
 
             Collections.sort(osoba.getMieszkania());
