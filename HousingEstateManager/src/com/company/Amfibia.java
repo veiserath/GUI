@@ -14,7 +14,7 @@ public class Amfibia extends Pojazd implements Plywajacy {
     }
 
     @Override
-    public void wysiadz(Osoba osoba) {
+    public void wysiadz(Person person) {
         System.out.println("Pamietaj zeby byc na ladzie zanim wysiadziesz!");
     }
 

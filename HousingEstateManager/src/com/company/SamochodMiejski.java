@@ -15,12 +15,12 @@ public class SamochodMiejski extends Pojazd {
     }
 
     @Override
-    public void wsiadz(Osoba osoba) {
+    public void wsiadz(Person person) {
         System.out.println("ale wygodnie!");
     }
 
     @Override
-    public void wysiadz(Osoba osoba) {
+    public void wysiadz(Person person) {
         System.out.println("Wysiadam z auta miejskiego");
     }
 

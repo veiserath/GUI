@@ -27,11 +27,11 @@ public abstract class Pojazd extends Przedmiot {
         System.out.println("Stop!");
     }
 
-    public void wsiadz(Osoba osoba){
+    public void wsiadz(Person person){
         System.out.println("Wsiadam!");
     }
 
-    public abstract void wysiadz(Osoba osoba);
+    public abstract void wysiadz(Person person);
 
     public void cofaj(int predkosc){
         System.out.println("Cofam!");

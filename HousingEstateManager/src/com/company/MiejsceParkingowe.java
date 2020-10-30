@@ -11,7 +11,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
     private static int miejscaParkingoweCreated;
     private Date dataRozpoczeciaNajmu;
     private Date dataZakonczeniaNajmu;
-    private Osoba najemca;
+    private Person najemca;
     private boolean zadluzone;
     private boolean wynajete;
     private double wolneMiejsce;
@@ -54,7 +54,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         return dataZakonczeniaNajmu;
     }
 
-    public Osoba getNajemca() {
+    public Person getNajemca() {
         return najemca;
     }
 
@@ -79,7 +79,7 @@ public class MiejsceParkingowe extends Osiedle implements Comparable<MiejscePark
         this.dataZakonczeniaNajmu = dataZakonczeniaNajmu;
     }
 
-    public void setNajemca(Osoba najemca) {
+    public void setNajemca(Person najemca) {
         this.najemca = najemca;
     }
 

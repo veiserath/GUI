@@ -9,13 +9,13 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
     private double objetosc;
     private Date dataRozpoczeciaNajmu;
     private Date dataZakonczeniaNajmu;
-    private Osoba najemca;
+    private Person najemca;
     private static int mieszkaniaCreated;
     private boolean zadluzone;
     private boolean wynajete;
 
 
-    private List<Osoba> mieszkancy = new ArrayList<>();
+    private List<Person> mieszkancy = new ArrayList<>();
 
 
     public Mieszkanie(String nazwaOsiedla, String nazwaBloku, double dlugoscPomieszczenia, double szerokoscPomieszczenia, double wysokoscPomieszczenia) {
@@ -52,7 +52,7 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
         return dataZakonczeniaNajmu;
     }
 
-    public Osoba getNajemca() {
+    public Person getNajemca() {
         return najemca;
     }
 
@@ -64,7 +64,7 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
         return wynajete;
     }
 
-    public List<Osoba> getMieszkancy() {
+    public List<Person> getMieszkancy() {
         return mieszkancy;
     }
 
@@ -76,7 +76,7 @@ public class Mieszkanie extends Blok implements Comparable<Mieszkanie> {
         this.dataZakonczeniaNajmu = dataZakonczeniaNajmu;
     }
 
-    public void setNajemca(Osoba najemca) {
+    public void setNajemca(Person najemca) {
         this.najemca = najemca;
     }
 

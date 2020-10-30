@@ -27,7 +27,7 @@ public class Lodz extends Pojazd implements Plywajacy{
 
 
     @Override
-    public void wysiadz(Osoba osoba) {
+    public void wysiadz(Person person) {
         System.out.println("Plyne wplaw");
     }
 

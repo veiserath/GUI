@@ -26,12 +26,12 @@ public class SamochodTerenowy extends Pojazd {
     }
 
     @Override
-    public void wsiadz(Osoba osoba) {
+    public void wsiadz(Person person) {
 
     }
 
     @Override
-    public void wysiadz(Osoba osoba) {
+    public void wysiadz(Person person) {
         System.out.println("Wysiadam z auta terenowego.");
     }
 

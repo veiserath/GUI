@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Osoba {
+public class Person {
     private String imie;
     private String nazwisko;
     private String PESEL;
@@ -16,7 +16,7 @@ public class Osoba {
     private List<Mieszkanie> mieszkania = new ArrayList<>();
     List<MiejsceParkingowe> miejscaParkingowe = new ArrayList<>();
 
-    public Osoba(String imie, String nazwisko, String PESEL, String adres, String dataUrodzenia) {
+    public Person(String imie, String nazwisko, String PESEL, String adres, String dataUrodzenia) {
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.PESEL = PESEL;
@@ -24,26 +24,26 @@ public class Osoba {
         this.dataUrodzenia = dataUrodzenia;
     }
 
-    public void zameldujLokatora(Osoba osoba, Mieszkanie mieszkanie) throws ProblematicTenantException {
-        if ((howManyFiles(mieszkanie, osoba) > 2) && mieszkanie.getNajemca() == this) {
+    public void zameldujLokatora(Person person, Mieszkanie mieszkanie) throws ProblematicTenantException {
+        if ((howManyFiles(mieszkanie, person) > 2) && mieszkanie.getNajemca() == this) {
 //          sprawdzic czy dziala, jak watki beda ok.
-            throw new ProblematicTenantException("Osoba: " + osoba.imie + " " + osoba.nazwisko + " posiada juz Mieszkania: " + osoba.mieszkania + " oraz Miejsca Parkingowe: " + osoba.miejscaParkingowe);
-        } else if (mieszkanie.getNajemca() == this && !mieszkanie.getMieszkancy().contains(osoba)) {
-            mieszkanie.getMieszkancy().add(osoba);
-            System.out.println("Lokator " + osoba.imie + " zameldowany w " + mieszkanie.getId() + " przez: " + mieszkanie.getNajemca());
-        } else if (mieszkanie.getMieszkancy().contains(osoba)) {
-            System.out.println(osoba.imie + " jest juz zameldowana w " + mieszkanie.getId());
+            throw new ProblematicTenantException("Osoba: " + person.imie + " " + person.nazwisko + " posiada juz Mieszkania: " + person.mieszkania + " oraz Miejsca Parkingowe: " + person.miejscaParkingowe);
+        } else if (mieszkanie.getNajemca() == this && !mieszkanie.getMieszkancy().contains(person)) {
+            mieszkanie.getMieszkancy().add(person);
+            System.out.println("Lokator " + person.imie + " zameldowany w " + mieszkanie.getId() + " przez: " + mieszkanie.getNajemca());
+        } else if (mieszkanie.getMieszkancy().contains(person)) {
+            System.out.println(person.imie + " jest juz zameldowana w " + mieszkanie.getId());
         } else {
             System.out.println("Tylko najemca może wymeldowywać osoby z mieszkania!");
         }
     }
 
-    public void wymeldujLokatora(Osoba osoba, Mieszkanie mieszkanie) {
-        if (mieszkanie.getNajemca() == this && mieszkanie.getMieszkancy().contains(osoba)) {
-            mieszkanie.getMieszkancy().remove(osoba);
-            System.out.println("Lokator " + osoba.imie + " wymeldowany.");
-        } else if (!mieszkanie.getMieszkancy().contains(osoba)) {
-            System.out.println(osoba.imie + " nie jest zameldowany w " + mieszkanie.getId());
+    public void wymeldujLokatora(Person person, Mieszkanie mieszkanie) {
+        if (mieszkanie.getNajemca() == this && mieszkanie.getMieszkancy().contains(person)) {
+            mieszkanie.getMieszkancy().remove(person);
+            System.out.println("Lokator " + person.imie + " wymeldowany.");
+        } else if (!mieszkanie.getMieszkancy().contains(person)) {
+            System.out.println(person.imie + " nie jest zameldowany w " + mieszkanie.getId());
         } else {
             System.out.println("Tylko najemca może usuwać osoby z mieszkania!");
         }
@@ -198,9 +198,9 @@ public class Osoba {
         }
     }
 
-    public synchronized int howManyFiles(Mieszkanie mieszkanie, Osoba osoba) {
+    public synchronized int howManyFiles(Mieszkanie mieszkanie, Person person) {
         int iloscPismNaJednoOsiedle = 0;
-        for (Pismo pismo : osoba.pisma) {
+        for (Pismo pismo : person.pisma) {
             if (mieszkanie.nazwaOsiedla.equals(pismo.getDotyczyOsiedla())) {
                 iloscPismNaJednoOsiedle++;
             }
@@ -209,9 +209,9 @@ public class Osoba {
         return iloscPismNaJednoOsiedle;
     }
 
-    public synchronized int howManyFiles(MiejsceParkingowe miejsceParkingowe, Osoba osoba) {
+    public synchronized int howManyFiles(MiejsceParkingowe miejsceParkingowe, Person person) {
         int iloscPismNaJednoOsiedle = 0;
-        for (Pismo pismo : osoba.pisma) {
+        for (Pismo pismo : person.pisma) {
             if (miejsceParkingowe.nazwaOsiedla.equals(pismo.getDotyczyOsiedla())) {
                 iloscPismNaJednoOsiedle++;
             }
